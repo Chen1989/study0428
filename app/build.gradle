@@ -25,6 +25,14 @@ android {
             buildConfigField "String", "Chen_Api", "\"debug_chen_test_api\""
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        chen.initWith(debug)
+        chen {
+            minifyEnabled false
+            resValue "string", "app_name", "chen_gradle_chen"
+            buildConfigField "String", "Chen_Api", "\"chen_chen_test_api\""
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 }
 

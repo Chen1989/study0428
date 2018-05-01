@@ -34,6 +34,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "color"
+    productFlavors {
+        red {
+            flavorDimensions "color"
+        }
+        black {
+            flavorDimensions "color"
+        }
+    }
+    signingConfigs {
+        chen.initWith(debug)
+    }
 }
 
 dependencies {

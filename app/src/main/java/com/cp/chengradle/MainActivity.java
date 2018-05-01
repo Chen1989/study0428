@@ -12,5 +12,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         String api = BuildConfig.Chen_Api;
         Log.i("ChenSdk", "api = " + api);
+        Log.i("ChenSdk", "BuildConfig.DEBUG = " + BuildConfig.DEBUG);
     }
 }

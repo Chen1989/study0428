@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.cp.chengradle.instance.ChenTestClass;
+
 public class MainActivity extends Activity {
 
     @Override
@@ -13,5 +15,7 @@ public class MainActivity extends Activity {
         String api = BuildConfig.Chen_Api;
         Log.i("ChenSdk", "api = " + api);
         Log.i("ChenSdk", "BuildConfig.DEBUG = " + BuildConfig.DEBUG);
+
+        ChenTestClass.testSingleton();
     }
 }

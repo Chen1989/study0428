@@ -25,6 +25,31 @@ allprojects {
     }
 }
 
+//下面这个subprojects{}就是一个Script Block
+//subprojects {
+//    println"Configure for $project.name" //遍历子Project，project变量对应每个子Project
+//    buildscript {  //这也是一个SB
+//        repositories {//repositories是一个SB
+//            ///jcenter是一个函数，表示编译过程中依赖的库，所需的插件可以在jcenter仓库中
+//            //下载。
+//            jcenter()
+//        }
+//        dependencies { //SB
+//            //dependencies表示我们编译的时候，依赖android开发的gradle插件。插件对应的
+//            //class path是com.android.tools.build。版本是3.0.0
+//            classpath 'com.android.tools.build:gradle:3.0.0'
+//        }
+//        //为每个子Project加载utils.gradle 。当然，这句话可以放到buildscript花括号之后
+//        apply from: rootProject.getRootDir().getAbsolutePath() + "/buildscript/utils.gradle"
+//    }//buildscript结束
+//}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+
+gradle.beforeProject { project ->
+    println 'project name AAAAA = ' + project.name
+
 }

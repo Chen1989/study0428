@@ -22,6 +22,34 @@ android {
 
 }
 
+////clean是一个Task的名字，这个Task好像是Java插件（这里是Android插件）引入的。
+////dependsOn是一个函数，下面这句话的意思是 clean任务依赖cposCleanTask任务。所以
+////当你gradle clean以执行clean Task的时候，cposCleanTask也会执行
+//clean.dependsOn 'cposCleanTask'
+////创建一个Task，
+//task cposCleanTask() <<{
+//    cleanOutput(true)  //cleanOutput是utils.gradle中通过extra属性设置的Closure
+//}
+////前面说了，我要把jar包拷贝到指定的目录。对于Android编译，我一般指定gradle assemble
+////它默认编译debug和release两种输出。所以，下面这个段代码表示：
+////tasks代表一个Projects中的所有Task，是一个容器。getByName表示找到指定名称的任务。
+////我这里要找的assemble任务，然后我通过doLast添加了一个Action。这个Action就是copy
+////产出物到我设置的目标目录中去
+//tasks.getByName("assemble"){
+//    it.doLast{
+//        println "$project.name: After assemble, jar libs are copied tolocal repository"
+//        copyOutput(true)
+//    }
+//}
+/*
+  因为我的项目只提供最终的release编译出来的Jar包给其他人，所以不需要编译debug版的东西
+  当Project创建完所有任务的有向图后，我通过afterEvaluate函数设置一个回调Closure。在这个回调
+  Closure里，我disable了所有Debug的Task
+*/
+//project.afterEvaluate{
+//    disableDebugBuild()
+//}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

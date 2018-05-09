@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/slide_chen_view"
+    android:background="@color/colorPrimary"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/image2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:tag="0"
+            android:text="菜单"
+            android:textColor="#ff0000ff"
+            android:textSize="60sp" />
+        <TextView
+            android:id="@+id/image1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:gravity="center"
+            android:tag="1"
+            android:text="主页面"
+            android:textColor="#ff00ff00"
+            android:textSize="60sp" />
+</RelativeLayout>

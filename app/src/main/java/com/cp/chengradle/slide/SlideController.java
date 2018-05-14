@@ -1,9 +1,13 @@
 package com.cp.chengradle.slide;
 
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
+import android.view.View;
 
 /**
  * Created by PengChen on 2018/5/9.
+ * producer;customer
+ * http://gitlab.abcdserver.com/
  */
 
 public class SlideController {
@@ -15,9 +19,16 @@ public class SlideController {
     private float currentY;
     private boolean isDraging;
     private DragCallBack _callBack;
+    private View _view;
+    private int _heigth;
+    private int _width;
 
-    public SlideController(DragCallBack callBack) {
+    public SlideController(View view, DragCallBack callBack) {
         _callBack = callBack;
+        _view = view;
+        DisplayMetrics dm = _view.getResources().getDisplayMetrics();
+        _heigth = dm.heightPixels;
+        _width = dm.widthPixels;
     }
 
     public void onDragBegin(MotionEvent event) {
@@ -26,7 +37,7 @@ public class SlideController {
         currentX = beginX;
         currentY = beginY;
         isDraging = true;
-        _callBack.callBackDragBagin();
+        _callBack.callBackDragBegin();
     }
 
     public void onDraging(MotionEvent event) {
@@ -36,6 +47,12 @@ public class SlideController {
         float allDetalY = event.getRawY() - beginY;
         currentX = event.getRawX();
         currentY = event.getRawY();
+        if (_view.getTop() + detalY < 0 || _view.getBottom() + detalY > _heigth ) {
+            detalY = 0;
+        }
+        if (_view.getLeft() + detalX < 0 || _view.getRight() + detalX > _width) {
+            detalX = 0;
+        }
         _callBack.callBackDrag(detalX, detalY, allDetalX, allDetalY);
     }
 
@@ -47,7 +64,7 @@ public class SlideController {
     }
 
     public interface DragCallBack {
-        void callBackDragBagin();
+        void callBackDragBegin();
         void callBackDrag(float detaX, float detaY, float allDetaX, float allDetaY);
         void callBackDragEnd();
     }

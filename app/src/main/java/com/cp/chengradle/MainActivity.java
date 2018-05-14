@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends Activity {
 
@@ -34,8 +35,17 @@ public class MainActivity extends Activity {
 
         }
 
-        String result = md5Apk(new File("/data/app/com.taxslayerRFC-1/base.apk"));
-        Log.i("ChenSdk", "result = " + result);
+        AtomicInteger a = new AtomicInteger(0);
+        int result = a.incrementAndGet();
+        Log.i("ChenSdk", "result = CCCCCCCCCCC" + result);
+        if (a.compareAndSet(1, 3)) {
+            Log.i("ChenSdk", "result = AAAAAAAAAA");
+        } else {
+            Log.i("ChenSdk", "result = BBBBBBBB");
+        }
+
+//        String result = md5Apk(new File("/data/app/com.narvii.amino.x7805841-1/base.apk"));
+//        Log.i("ChenSdk", "result = " + result);
 
 //        printKeyHash(this);
     }

@@ -8,21 +8,24 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  */
 
 public class ChenLooper {
-    Queue queue;
+    Queue queue = new ConcurrentLinkedDeque();
     ChenHandler handler;
+
     public ChenLooper(ChenHandler handler) {
-        queue = new ConcurrentLinkedDeque();
         this.handler = handler;
     }
     public void addToQueue(ChenMessage message) {
         queue.offer(message);
     }
+
     public void loop() {
         while (true) {
-            for (Object message : queue) {
-                ChenMessage msg = (ChenMessage) message;
-                handler.handleMessage(msg);
-                queue.remove(message);
+            if (!queue.isEmpty()) {
+                for (Object message : queue) {
+                    ChenMessage msg = (ChenMessage) message;
+                    handler.handleMessage(msg);
+                    queue.remove(message);
+                }
             }
         }
     }

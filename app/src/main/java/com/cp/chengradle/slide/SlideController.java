@@ -1,16 +1,18 @@
 package com.cp.chengradle.slide;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 /**
  * Created by PengChen on 2018/5/9.
- * producer;customer
+ *android:id/content
  * http://gitlab.abcdserver.com/
  */
 
 public class SlideController {
+    private final String TAG = "ChenSdk";
     private float beginX;
     private float beginY;
     private float endX;
@@ -27,8 +29,11 @@ public class SlideController {
         _callBack = callBack;
         _view = view;
         DisplayMetrics dm = _view.getResources().getDisplayMetrics();
-        _heigth = dm.heightPixels;
+        _heigth = dm.heightPixels - 146;
         _width = dm.widthPixels;
+        Log.i(TAG, "height = " + _heigth);
+        Log.i(TAG, "width = " + _width);
+        Log.i(TAG, "_view.getTop() = " + _view.getTop());
     }
 
     public void onDragBegin(MotionEvent event) {

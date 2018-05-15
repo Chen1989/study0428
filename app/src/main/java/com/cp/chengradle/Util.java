@@ -1,5 +1,7 @@
 package com.cp.chengradle;
 
+import android.util.Log;
+
 import com.cp.chengradle.messagequeue.ChenHandler;
 import com.cp.chengradle.messagequeue.ChenManager;
 import com.cp.chengradle.messagequeue.ChenMessage;
@@ -13,33 +15,33 @@ public class Util {
         final ChenManager manager = new ChenManager(new ChenHandler() {
             @Override
             public void handleMessage(ChenMessage message) {
-                System.out.println(message.getValue());
+                Log.i("ChenSdk", "message = " + message.getValue());
             }
         });
         new Thread(new Runnable() {
             @Override
             public void run() {
                 int i = 0;
-                while(i < 1000) {
-                    manager.send(new ChenMessage(++i + ""));
+                while(i < 100) {
+                    manager.send(new ChenMessage(String.valueOf(i++)));
                 }
             }
         }).start();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int i = 1000;
-                while(i < 2001) {
-                    manager.send(new ChenMessage(++i + ""));
+                int i = 100;
+                while(i < 200) {
+                    manager.send(new ChenMessage(String.valueOf(i++)));
                 }
             }
         }).start();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int i = 2000;
-                while(i < 3001) {
-                    manager.send(new ChenMessage(++i + ""));
+                int i = 200;
+                while(i < 300) {
+                    manager.send(new ChenMessage(String.valueOf(i++)));
                 }
             }
         }).start();

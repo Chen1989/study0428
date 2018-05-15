@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.cp.chengradle.R;
+import com.cp.chengradle.Util;
 
 /**
  * Created by PengChen on 2018/5/9.
@@ -51,7 +52,13 @@ public class SlideMainActivity extends Activity {
             }
         });
 
-//        Util.testMessage();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Util.testMessage();
+            }
+        }).start();
+
     }
 
     @Override

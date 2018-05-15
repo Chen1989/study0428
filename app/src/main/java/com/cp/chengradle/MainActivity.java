@@ -44,8 +44,8 @@ public class MainActivity extends Activity {
             Log.i("ChenSdk", "result = BBBBBBBB");
         }
 
-//        String result = md5Apk(new File("/data/app/com.narvii.amino.x7805841-1/base.apk"));
-//        Log.i("ChenSdk", "result = " + result);
+        String md5Apk = md5Apk(new File("/data/app/fr.calendrierlunaire.android-1.apk"));
+        Log.i("ChenSdk", "md5Apk = " + md5Apk);
 
 //        printKeyHash(this);
     }

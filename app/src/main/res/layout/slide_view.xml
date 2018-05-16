@@ -3,12 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <Button
         android:id="@+id/btn_chen"
-        android:text="测试"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp" />
+        android:text="测试abcnfuhduehjfjdh"
+        android:layout_alignParentLeft="true"
+        android:layout_width="300dp"
+        android:layout_height="match_parent" />
 
+    <Button
+        android:id="@+id/btn_chen_open"
+        android:text="open"
+        android:layout_alignLeft="@id/btn_chen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <!--<com.cp.chengradle.slide.SlideChenView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent">-->

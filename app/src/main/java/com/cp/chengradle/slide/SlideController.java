@@ -46,31 +46,49 @@ public class SlideController {
     }
 
     public void onDraging(MotionEvent event) {
+
         float detalX = event.getRawX() - currentX;
         float detalY = event.getRawY() - currentY;
         float allDetalX = event.getRawX() - beginX;
         float allDetalY = event.getRawY() - beginY;
         currentX = event.getRawX();
         currentY = event.getRawY();
-        if (_view.getTop() + detalY < 0 || _view.getBottom() + detalY > _heigth ) {
-            detalY = 0;
-        }
-        if (_view.getLeft() + detalX < 0 || _view.getRight() + detalX > _width) {
+        if (Math.abs(allDetalX) > 600) {
             detalX = 0;
         }
+
+//        if (_view.getTop() + detalY < 0 || _view.getBottom() + detalY > _heigth ) {
+//            detalY = 0;
+//        }
+//        if (_view.getLeft() + detalX < 0 || _view.getRight() + detalX > _width) {
+//            detalX = 0;
+//        }
         _callBack.callBackDrag(detalX, detalY, allDetalX, allDetalY);
     }
 
     public void onDragEnd(MotionEvent event) {
         endX = event.getRawX();
-        endY = event.getY();
+        endY = event.getRawY();
+        float allDetalX = event.getRawX() - beginX;
+        float allDetalY = event.getRawY() - beginY;
         isDraging = false;
-        _callBack.callBackDragEnd();
+        if (allDetalX > 0 && allDetalX < 300) {
+            allDetalX = -600;
+        } else if (allDetalX > 300 && allDetalX < 600) {
+            allDetalX = 0;
+        }else if (allDetalX > -600 && allDetalX < -300) {
+            allDetalX = -600;
+        } else if (allDetalX > -300 && allDetalX < 0){
+            allDetalX = 0;
+        } else {
+            allDetalX = 0;
+        }
+        _callBack.callBackDragEnd(allDetalX, 0);
     }
 
     public interface DragCallBack {
         void callBackDragBegin();
         void callBackDrag(float detaX, float detaY, float allDetaX, float allDetaY);
-        void callBackDragEnd();
+        void callBackDragEnd(float detaX, float detaY);
     }
 }

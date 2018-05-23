@@ -24,6 +24,8 @@ public class SlideController {
     private View _view;
     private int _heigth;
     private int _width;
+    private float density;
+    private boolean isOpen = false;
 
     public SlideController(View view, DragCallBack callBack) {
         _callBack = callBack;
@@ -31,6 +33,7 @@ public class SlideController {
         DisplayMetrics dm = _view.getResources().getDisplayMetrics();
         _heigth = dm.heightPixels - 146;
         _width = dm.widthPixels;
+        density = dm.density;
         Log.i(TAG, "height = " + _heigth);
         Log.i(TAG, "width = " + _width);
         Log.i(TAG, "_view.getTop() = " + _view.getTop());
@@ -53,7 +56,7 @@ public class SlideController {
         float allDetalY = event.getRawY() - beginY;
         currentX = event.getRawX();
         currentY = event.getRawY();
-        if (Math.abs(allDetalX) > 600) {
+        if (Math.abs(allDetalX) > 300 * density) {
             detalX = 0;
         }
 
@@ -72,17 +75,31 @@ public class SlideController {
         float allDetalX = event.getRawX() - beginX;
         float allDetalY = event.getRawY() - beginY;
         isDraging = false;
-        if (allDetalX > 0 && allDetalX < 300) {
-            allDetalX = -600;
-        } else if (allDetalX > 300 && allDetalX < 600) {
+        if (allDetalX > 0 && allDetalX < 150 * density) {
+            allDetalX = -300 * density;
+        } else if (allDetalX > 150 * density ) {
             allDetalX = 0;
-        }else if (allDetalX > -600 && allDetalX < -300) {
-            allDetalX = -600;
-        } else if (allDetalX > -300 && allDetalX < 0){
+        }else if (allDetalX < -150 * density) {
+            allDetalX = -300 * density;
+        } else if (allDetalX > -150 * density && allDetalX < 0){
             allDetalX = 0;
         } else {
             allDetalX = 0;
         }
+//        if (isOpen) {
+//            if ((int)allDetalX == (int)-300 * density) {
+//                allDetalX = 0;
+//            } else {
+//                isOpen = false;
+//            }
+//        } else {
+//            if ((int)allDetalX == 0) {
+//                allDetalX = -300 * density;
+//            } else {
+//                isOpen = true;
+//            }
+//        }
+
         _callBack.callBackDragEnd(allDetalX, 0);
     }
 

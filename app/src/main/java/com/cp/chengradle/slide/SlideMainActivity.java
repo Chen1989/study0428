@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.cp.chengradle.R;
+import com.cp.chengradle.annotation.AnnotationTest;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,7 +36,8 @@ public class SlideMainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.slide_view);
         btn = findViewById(R.id.btn_chen);
-        btn.setTranslationX(-600);
+        int translationX = -(int)(300 * getResources().getDisplayMetrics().density);
+        btn.setTranslationX(translationX);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +77,7 @@ public class SlideMainActivity extends Activity {
 //            }
 //        }).start();
         Log.i("ChenSdk", "点击了按钮 3 = " + Build.PRODUCT);
-
+        System.getProperty("os.name");
         try {
             String[] asserts = getAssets().list("");
             Log.i("ChenSdk", "asserts.length = " + getProcessName());
@@ -84,7 +86,7 @@ public class SlideMainActivity extends Activity {
             e.printStackTrace();
         }
 
-
+        AnnotationTest.test();
 
     }
 

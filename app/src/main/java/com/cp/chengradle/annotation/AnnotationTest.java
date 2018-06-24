@@ -4,6 +4,10 @@ import java.lang.reflect.Method;
 
 /**
  * Created by PengChen on 2018/5/23.
+ *
+ * 'count_down_text': '还剩 %1$d 秒','count_down_text_for_reward': '{num_seconds,plural, \\x3d1{1 秒后奖励}other{%1$d 秒后奖励}}','count_down_seconds_text_for_reward': '{NUM_SECONDS,plural, \\x3d1{1 秒后奖励}other{# 秒后奖励}}','close_confirmation_title':
+ *
+ *
  */
 
 @HelloWorld(type = 1, name = "hello")

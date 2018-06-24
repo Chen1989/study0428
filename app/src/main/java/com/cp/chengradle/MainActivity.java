@@ -1,13 +1,21 @@
 package com.cp.chengradle;
 
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.WindowManager;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +26,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends Activity {
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +37,15 @@ public class MainActivity extends Activity {
         String api = BuildConfig.Chen_Api;
         Log.i("ChenSdk", "api = " + api);
         Log.i("ChenSdk", "BuildConfig.DEBUG = " + UUID.randomUUID().toString());
+        byte[] resu = Base64.encode("你好".getBytes(), Base64.DEFAULT);
+        byte[] test = new byte[]{'c','h','e','n',',','h','e','l','l','o'};
+        for (int i = 0; i < test.length; i++) {
+            if (i > 1) {
+                test[i] = test[i] ^ test[i - 1];
+
+            }
+        }
+        int v = (int)System.nanoTime();
 
 //        ChenTestClass.testSingleton();
 
@@ -43,11 +64,35 @@ public class MainActivity extends Activity {
         } else {
             Log.i("ChenSdk", "result = BBBBBBBB");
         }
+        try {
+            ApplicationInfo info = getPackageManager().getApplicationInfo("com.blue.chen", 0);
+            if (info == null) {
+                Log.i("ChenSdk", "info is null. ");
+            }
+            String md5Apk = md5Apk(new File(info.sourceDir));
+            Log.i("ChenSdk", "md5Apk = " + md5Apk);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        String md5Apk = md5Apk(new File("/data/app/fr.calendrierlunaire.android-1.apk"));
-        Log.i("ChenSdk", "md5Apk = " + md5Apk);
+        getWindow().getAttributes().flags |=
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        getWindow().getAttributes().alpha = (float) 0;
+        getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
+        setTheme(android.R.style.Theme_Translucent_NoTitleBar);
 
-//        printKeyHash(this);
+        PendingIntent var1 = PendingIntent.getActivity(this, 0, new Intent(), 0);
+        String testResult =  Build.VERSION.SDK_INT >= 17?var1.getCreatorPackage():var1.getTargetPackage();
+        System.getenv("PATH");
+        JSONObject object = new JSONObject();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        finish();
     }
 
     private static String printKeyHash(Activity context) {

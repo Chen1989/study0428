@@ -7,15 +7,15 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.WindowManager;
 
-import org.json.JSONObject;
+import com.cp.chengradle.json.IContext;
+import com.cp.chengradle.json.JsonContext;
+import com.cp.chengradle.json.StartState;
+import com.cp.chengradle.json.State;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
         byte[] test = new byte[]{'c','h','e','n',',','h','e','l','l','o'};
         for (int i = 0; i < test.length; i++) {
             if (i > 1) {
-                test[i] = test[i] ^ test[i - 1];
+                test[i] = (byte) (test[i] ^ test[i - 1]);
 
             }
         }
@@ -64,35 +64,37 @@ public class MainActivity extends Activity {
         } else {
             Log.i("ChenSdk", "result = BBBBBBBB");
         }
-        try {
-            ApplicationInfo info = getPackageManager().getApplicationInfo("com.blue.chen", 0);
-            if (info == null) {
-                Log.i("ChenSdk", "info is null. ");
-            }
-            String md5Apk = md5Apk(new File(info.sourceDir));
-            Log.i("ChenSdk", "md5Apk = " + md5Apk);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            ApplicationInfo info = getPackageManager().getApplicationInfo("com.blue.chen", 0);
+//            if (info == null) {
+//                Log.i("ChenSdk", "info is null. ");
+//            }
+//            String md5Apk = md5Apk(new File(info.sourceDir));
+//            Log.i("ChenSdk", "md5Apk = " + md5Apk);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
-        getWindow().getAttributes().flags |=
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        getWindow().getAttributes().alpha = (float) 0;
-        getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
-        setTheme(android.R.style.Theme_Translucent_NoTitleBar);
+//        getWindow().getAttributes().flags |=
+//                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+//                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+//        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        getWindow().getAttributes().alpha = (float) 0;
+//        getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
+//        setTheme(android.R.style.Theme_Translucent_NoTitleBar);
 
         PendingIntent var1 = PendingIntent.getActivity(this, 0, new Intent(), 0);
         String testResult =  Build.VERSION.SDK_INT >= 17?var1.getCreatorPackage():var1.getTargetPackage();
         System.getenv("PATH");
-        JSONObject object = new JSONObject();
+        IContext jsonContext = new JsonContext();
+        State state = new StartState(jsonContext);
+        state.handle("{\"name\":\"chen\",\"age\":23}");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        finish();
+//        finish();
     }
 
     private static String printKeyHash(Activity context) {

@@ -13,6 +13,7 @@ public class FloatState extends State {
 
     private String patternNumber = "[0-9]";
 
+    private String patternFindNumber = "(\\d+)";
 
     public FloatState(IContext context) {
         super(context);
@@ -25,16 +26,27 @@ public class FloatState extends State {
             return;
         }
         if (patternNumber(jsonString)) {
-
+            String nextNumber = findNumber(jsonString);
+            mContext.addToken(new JsonToken(nextNumber, 1));
+            jsonString = jsonString.substring(nextNumber.length());
         }
     }
 
     private boolean patternNumber(String jsonString) {
         Pattern pa = Pattern.compile(patternNumber);
-        Matcher ma = pa.matcher(jsonString);
+        Matcher ma = pa.matcher(jsonString.substring(0, 1));
         if (ma.find()) {
             return true;
         }
         return false;
+    }
+
+    private String findNumber(String jsonString) {
+        Pattern pa = Pattern.compile(patternFindNumber);
+        Matcher ma = pa.matcher(jsonString);
+        if (ma.find()) {
+            return ma.group(1);
+        }
+        return "";
     }
 }

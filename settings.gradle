@@ -30,6 +30,7 @@ def initMinshengGradleEnvironment(){
 
 include ':app'
 include ':gradlelib'
+include 'security'
 
 gradle.beforeProject { project ->
     println 'project name = ' + project.name

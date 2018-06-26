@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/gradlelib/gradlelib.iml" filepath="$PROJECT_DIR$/gradlelib/gradlelib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/security/security.iml" filepath="$PROJECT_DIR$/security/security.iml" />
       <module fileurl="file://$PROJECT_DIR$/study0428.iml" filepath="$PROJECT_DIR$/study0428.iml" />
     </modules>
   </component>

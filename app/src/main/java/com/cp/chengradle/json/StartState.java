@@ -1,6 +1,7 @@
 package com.cp.chengradle.json;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,8 +48,10 @@ public class StartState extends State {
             State state = new StringState(mContext);
             mContext.setState(state);
             state.handle(jsonString);
-        } else {
-
+        }  else {
+            State state = new ErrorState(mContext);
+            mContext.setState(state);
+            state.handle(jsonString);
         }
     }
 

@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
         System.getenv("PATH");
         IContext jsonContext = new JsonContext();
         State state = new StartState(jsonContext);
-        state.handle("{\"name\":\"chen\",\"age\":23}");
+        state.handle("{\"name\":\"chen\",\"age\":23.56.89,\"sex\":\"男\"}");
     }
 
     @Override

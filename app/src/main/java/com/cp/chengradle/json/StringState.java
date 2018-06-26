@@ -37,6 +37,10 @@ public class StringState extends State {
             State state = new StartState(mContext);
             mContext.setState(state);
             state.handle(jsonString);
+        } else {
+            State state = new ErrorState(mContext);
+            mContext.setState(state);
+            state.handle(jsonString);
         }
     }
 

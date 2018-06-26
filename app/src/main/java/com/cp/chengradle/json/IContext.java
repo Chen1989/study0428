@@ -7,4 +7,5 @@ package com.cp.chengradle.json;
 public interface IContext {
     void setState(State state);
     void addToken(JsonToken token);
+    void clearToken();
 }

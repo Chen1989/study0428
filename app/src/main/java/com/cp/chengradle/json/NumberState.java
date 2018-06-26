@@ -1,6 +1,7 @@
 package com.cp.chengradle.json;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,12 +36,16 @@ public class NumberState extends State {
             State state = new FloatState(mContext);
             mContext.setState(state);
             state.handle(jsonString.substring(1));
-        } if (patternSign(jsonString)) {
+        } else if (patternSign(jsonString)) {
             JsonToken token = new JsonToken(jsonString.substring(0, 1), 0);
             mContext.addToken(token);
             State state = new StartState(mContext);
             mContext.setState(state);
             state.handle(jsonString.substring(1));
+        } else {
+            State state = new ErrorState(mContext);
+            mContext.setState(state);
+            state.handle(jsonString);
         }
     }
 

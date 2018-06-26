@@ -28,10 +28,16 @@ public class JsonContext implements IContext{
     }
 
     @Override
+    public void clearToken() {
+        tokenList.clear();
+    }
+
+    @Override
     public String toString() {
         for (int i = 0; i < tokenList.size(); i++) {
             Log.i("SdkJson", "value = " + tokenList.get(i).value + ", key = " + tokenList.get(i).key);
         }
         return super.toString();
     }
+
 }

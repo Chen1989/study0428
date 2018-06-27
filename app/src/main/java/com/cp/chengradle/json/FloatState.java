@@ -1,7 +1,6 @@
 package com.cp.chengradle.json;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

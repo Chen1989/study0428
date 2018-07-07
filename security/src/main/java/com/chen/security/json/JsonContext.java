@@ -15,7 +15,24 @@ import java.util.List;
 
 public class JsonContext implements IContext{
     private List<JsonToken> tokenList = new ArrayList<>();
-    private State mState = new StartState(this);
+    private State startState;
+    private State stringState;
+    private State numberState;
+    private State floatState;
+    private State errorState;
+    private State finishState;
+    private State mState;
+
+    JsonContext() {
+        stringState = new StringState(this);
+        startState = new StartState(this);
+        numberState = new NumberState(this);
+        floatState = new FloatState(this);
+        errorState = new ErrorState(this);
+        mState = startState;
+//        startState = new StartState(this);
+//        startState = new StartState(this);
+    }
 
     @Override
     public void setState(State state) {

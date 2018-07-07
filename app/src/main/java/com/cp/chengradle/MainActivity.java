@@ -1,21 +1,14 @@
 package com.cp.chengradle;
 
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-
-import com.cp.chengradle.json.IContext;
-import com.cp.chengradle.json.JsonContext;
-import com.cp.chengradle.json.StartState;
-import com.cp.chengradle.json.State;
+import android.view.MotionEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -83,12 +76,24 @@ public class MainActivity extends Activity {
 //        getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
 //        setTheme(android.R.style.Theme_Translucent_NoTitleBar);
 
-        PendingIntent var1 = PendingIntent.getActivity(this, 0, new Intent(), 0);
-        String testResult =  Build.VERSION.SDK_INT >= 17?var1.getCreatorPackage():var1.getTargetPackage();
-        System.getenv("PATH");
-        IContext jsonContext = new JsonContext();
-        State state = new StartState(jsonContext);
-        state.handle("{\"name\":\"chen\",\"age\":23.56.89,\"sex\":\"男\"}");
+//        PendingIntent var1 = PendingIntent.getActivity(this, 0, new Intent(), 0);
+//        String testResult =  Build.VERSION.SDK_INT >= 17?var1.getCreatorPackage():var1.getTargetPackage();
+//        System.getenv("PATH");
+//        IContext jsonContext = new JsonContext();
+//        State state = new StartState(jsonContext);
+//        state.handle("{\"name\":\"chen\",\"age\":23.56.89,\"sex\":\"男\"}");
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Log.i("ChenSdk", "result = BBBBBBBB");
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.i("ChenSdk", "result = AAAAAAAA");
+        return super.onTouchEvent(event);
     }
 
     @Override

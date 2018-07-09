@@ -1,7 +1,6 @@
 package com.cp.chengradle;
 
 import android.app.Activity;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -43,10 +42,10 @@ public class MainActivity extends Activity {
 //        ChenTestClass.testSingleton();
 
         try {
-            ApplicationInfo var2 = getPackageManager().getApplicationInfo(getPackageName(), 0);
-            Log.i("ChenSdk", "var2.sourceDir = " + var2.sourceDir);
+            PackageInfo var2 = getPackageManager().getPackageInfo("com.chen.pluginmiddle", 0);
+            Log.i("ChenSdk", "var2.sourceDir = " + var2.versionCode);
         } catch (Exception var3) {
-
+            var3.printStackTrace();
         }
 
         AtomicInteger a = new AtomicInteger(0);

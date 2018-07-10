@@ -24,6 +24,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".StartActivity"/>
+        <activity android:name=".ChenStartActivity"/>
+
         <!--<activity android:name=".slide.SlideMainActivity">-->
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->

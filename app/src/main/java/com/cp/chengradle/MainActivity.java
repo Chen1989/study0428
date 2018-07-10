@@ -1,6 +1,8 @@
 package com.cp.chengradle;
 
 import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -11,6 +13,9 @@ import android.view.MotionEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
@@ -41,12 +46,6 @@ public class MainActivity extends Activity {
 
 //        ChenTestClass.testSingleton();
 
-        try {
-            PackageInfo var2 = getPackageManager().getPackageInfo("com.chen.pluginmiddle", 0);
-            Log.i("ChenSdk", "var2.sourceDir = " + var2.versionCode);
-        } catch (Exception var3) {
-            var3.printStackTrace();
-        }
 
         AtomicInteger a = new AtomicInteger(0);
         int result = a.incrementAndGet();
@@ -81,6 +80,66 @@ public class MainActivity extends Activity {
 //        IContext jsonContext = new JsonContext();
 //        State state = new StartState(jsonContext);
 //        state.handle("{\"name\":\"chen\",\"age\":23.56.89,\"sex\":\"男\"}");
+//        hookStartActivity();
+        hookActivityStartActivity(this);
+        Intent intent = new Intent(this, StartActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void hookActivityStartActivity(Activity activity) {
+        try {
+            Class<?> activityThreadClass = Class.forName("android.app.Activity");
+
+            // 拿到原始的 mInstrumentation字段
+            Field mInstrumentationField = activityThreadClass.getDeclaredField("mInstrumentation");
+            mInstrumentationField.setAccessible(true);
+            Instrumentation mInstrumentation = (Instrumentation) mInstrumentationField.get(activity);
+
+            // 创建代理对象
+            Instrumentation chenInstrumentation = new ChenInstrumentation(mInstrumentation, activity);
+
+            // 偷梁换柱
+            mInstrumentationField.set(activity, chenInstrumentation);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void hookStartActivity() {
+        try {
+            Class<?> activityThreadClass = Class.forName("android.app.ActivityThread");
+            Method currentActivityThreadMethod = activityThreadClass.getDeclaredMethod("currentActivityThread");
+            currentActivityThreadMethod.setAccessible(true);
+            Object currentActivityThread = currentActivityThreadMethod.invoke(null);
+
+            // 拿到原始的 mInstrumentation字段
+            Field mInstrumentationField = activityThreadClass.getDeclaredField("mInstrumentation");
+            mInstrumentationField.setAccessible(true);
+            Instrumentation mInstrumentation = (Instrumentation) mInstrumentationField.get(currentActivityThread);
+
+            // 创建代理对象
+            Instrumentation chenInstrumentation = new ChenInstrumentation(mInstrumentation);
+
+            // 偷梁换柱
+            mInstrumentationField.set(currentActivityThread, chenInstrumentation);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

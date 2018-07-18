@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".StartActivity"/>
+        <activity android:name=".StartActivity" android:exported="true"/>
         <activity android:name=".ChenStartActivity"/>
 
         <!--<activity android:name=".slide.SlideMainActivity">-->

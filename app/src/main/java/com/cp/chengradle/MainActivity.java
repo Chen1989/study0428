@@ -2,7 +2,6 @@ package com.cp.chengradle;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -81,10 +80,16 @@ public class MainActivity extends Activity {
 //        State state = new StartState(jsonContext);
 //        state.handle("{\"name\":\"chen\",\"age\":23.56.89,\"sex\":\"男\"}");
 //        hookStartActivity();
-        hookActivityStartActivity(this);
-        Intent intent = new Intent(this, StartActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+//        hookActivityStartActivity(this);
+//        Intent intent = new Intent(this, StartActivity.class);
+////        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+//        Intent intent = new Intent(Intent.ACTION_VIEW);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        File apkFile = new File("/sdcard/test/com.iqoption.apk");
+//        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+//        startActivity(intent);
+
     }
 
     private void hookActivityStartActivity(Activity activity) {

@@ -17,6 +17,10 @@ public class ObjectPool {
 
     private Vector pool;//用于存放对象的池
 
+    public int size(){
+        return pool.size();
+    }
+
     public ObjectPool(ParameterObject paraObj, Class clsType) {
         this.paraObj = paraObj;
         this.clsType = clsType;
@@ -35,7 +39,7 @@ public class ObjectPool {
             } else {
                 //如果当前池中无对象可用，而且所创建的对象数目已达到所限制的最大值，
                 // 就只能等待其它线程返回对象到池中
-
+                //设置超时时间
                 synchronized (this) {
                     try {
                         wait();

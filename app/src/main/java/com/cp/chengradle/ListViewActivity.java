@@ -3,8 +3,8 @@ package com.cp.chengradle;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.ListView;
 
+import com.cp.chengradle.adapter.ChenDragListView;
 import com.cp.chengradle.adapter.ListViewAdapter;
 
 /**
@@ -12,7 +12,7 @@ import com.cp.chengradle.adapter.ListViewAdapter;
  */
 
 public class ListViewActivity extends Activity {
-    private ListView lv;
+    private ChenDragListView lv;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

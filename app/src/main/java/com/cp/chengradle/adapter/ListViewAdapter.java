@@ -1,6 +1,7 @@
 package com.cp.chengradle.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 6;
+        return 15;
     }
 
     @Override
@@ -47,7 +48,10 @@ public class ListViewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.title.setText("chen_");
+        if (TextUtils.isEmpty(holder.title.getText())) {
+            holder.title.setText("chen_" + position);
+        }
+
         return convertView;
     }
 

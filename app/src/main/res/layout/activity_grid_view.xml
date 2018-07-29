@@ -9,25 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:cacheColorHint="@null"
-        android:horizontalSpacing="20dp"
+        android:horizontalSpacing="10dp"
         android:listSelector="@android:color/transparent"
         android:numColumns="4"
-        android:padding="10dp"
+        android:padding="5dp"
         android:verticalSpacing="10dp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
-
-    <com.cp.chengradle.adapter.DragGridView
-        android:id="@+id/otherGridView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:cacheColorHint="@null"
-        android:horizontalSpacing="20dp"
-        android:listSelector="@android:color/transparent"
-        android:numColumns="4"
-        android:padding="10dp"
-        android:verticalSpacing="10dp" />
 
 </LinearLayout>

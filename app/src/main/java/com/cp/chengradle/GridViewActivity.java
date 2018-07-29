@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Created by admin on 2018/7/29.
+ * https://www.jianshu.com/p/559b631ec330
  */
 
 public class GridViewActivity extends Activity {
@@ -33,27 +34,14 @@ public class GridViewActivity extends Activity {
 //        getSupportActionBar().hide();
         setContentView(R.layout.activity_grid_view);
         mGridView = (DragGridView) findViewById(R.id.mGridView);
-        otherGridView = (DragGridView) findViewById(R.id.otherGridView);
-        list.add("杭州");
-        list.add("宁波");
-        list.add("上海");
-        list.add("北京");
-        list.add("南京");
-        list.add("西安");
+        for (int i = 0; i < 30; i++) {
+            list.add("chen_" + i);
+        }
+
         MAdapter mAdapter = new MAdapter(list);
         mGridView.setAdapter(mAdapter);
 
-        list2.add("1");
-        list2.add("2");
-        list2.add("3");
-        list2.add("4");
-        list2.add("5");
-        list2.add("6");
-        MAdapter mAdapter2 = new MAdapter(list2);
-        otherGridView.setAdapter(mAdapter2);
     }
-
-
 
 
     class MAdapter extends DragGridAdapter<String> {

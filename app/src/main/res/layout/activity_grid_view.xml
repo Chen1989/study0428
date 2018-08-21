@@ -9,11 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:cacheColorHint="@null"
-        android:horizontalSpacing="10dp"
+        android:horizontalSpacing="5dp"
         android:listSelector="@android:color/transparent"
         android:numColumns="4"
         android:padding="5dp"
-        android:verticalSpacing="10dp" />
+        android:verticalSpacing="5dp" />
 
 
 </LinearLayout>

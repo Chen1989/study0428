@@ -10,6 +10,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.cp.chengradle.util.MPRegister;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Field;
@@ -89,6 +91,14 @@ public class MainActivity extends Activity {
 //        File apkFile = new File("/sdcard/test/com.iqoption.apk");
 //        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
 //        startActivity(intent);
+//        Logger.addLogAdapter(new AndroidLogAdapter());
+//        Logger.i("ChenSdk", "cacacacacacacac");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                MPRegister.register(getApplicationContext());
+            }
+        }).start();
 
     }
 

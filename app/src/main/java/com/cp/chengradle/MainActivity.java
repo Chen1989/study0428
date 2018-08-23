@@ -10,8 +10,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.cp.chengradle.util.MPRegister;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Field;
@@ -19,8 +17,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends Activity {
 
@@ -91,15 +99,68 @@ public class MainActivity extends Activity {
 //        File apkFile = new File("/sdcard/test/com.iqoption.apk");
 //        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
 //        startActivity(intent);
-//        Logger.addLogAdapter(new AndroidLogAdapter());
-//        Logger.i("ChenSdk", "cacacacacacacac");
+//        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+//                .showThreadInfo(true)  // (Optional) Whether to show thread info or not. Default true
+//                .methodCount(5)         // (Optional) How many method line to show. Default 5
+////                .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
+////                .logStrategy(customLog) // (Optional) Changes the log strategy to print out. Default LogCat
+//                .tag("Chen_Sdk")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
+//                .build();
+//        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
+//            @Override
+//            public boolean isLoggable(int priority, @Nullable String tag) {
+//                return super.isLoggable(priority, tag);
+//            }
+//        });
+//        Logger.i("你好");
+//        Logger.i("ChenSdk_%s", "cacacacacacacac");
+//        Logger.i("ChenSdk_%s", "这是什么情况");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MPRegister.register(getApplicationContext());
+
             }
         }).start();
 
+        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> e) throws Exception {
+
+            }
+        });
+
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        observable.subscribe(observer);
+
+        List<Integer> l = new ArrayList();
+        l.stream().filter(i -> i % 2 == 0);
+
+        List<Integer> list =  Arrays.asList(3,4,5,6,7).stream()
+                .map(na -> na.intValue())
+                .filter(integer -> integer % 2 == 0)
+                .collect(Collectors.toList());
+        Log.i("ChenSdk", "list = " + list.toString());
     }
 
     private void hookActivityStartActivity(Activity activity) {

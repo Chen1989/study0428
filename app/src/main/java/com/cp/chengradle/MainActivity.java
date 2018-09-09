@@ -17,18 +17,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 public class MainActivity extends Activity {
 
@@ -122,45 +119,24 @@ public class MainActivity extends Activity {
             }
         }).start();
 
-        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
-            @Override
-            public void subscribe(ObservableEmitter<String> e) throws Exception {
+//        observable.map(new Function<String, Object>() {
+//            @Override
+//            public Object apply(String s) throws Exception {
+//                return null;
+//            }
+//        }).filter(new Predicate<Object>() {
+//            @Override
+//            public boolean test(Object o) throws Exception {
+//                return false;
+//            }
+//        });
 
-            }
-        });
-
-        Observer<String> observer = new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(String s) {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-
-        observable.subscribe(observer);
-
-        List<Integer> l = new ArrayList();
-        l.stream().filter(i -> i % 2 == 0);
-
-        List<Integer> list =  Arrays.asList(3,4,5,6,7).stream()
-                .map(na -> na.intValue())
-                .filter(integer -> integer % 2 == 0)
-                .collect(Collectors.toList());
-        Log.i("ChenSdk", "list = " + list.toString());
+//        test();
+        try {
+            int aa = getPackageManager().getPackageInfo("com.android.vending", 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void hookActivityStartActivity(Activity activity) {
@@ -300,5 +276,72 @@ public class MainActivity extends Activity {
         }
 
         return var1.toString();
+    }
+
+    private void test() {
+
+//        Observer<String> ob = Observable.just("Chen_Sdk_Chen", "Ch");
+        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> e) throws Exception {
+                e.onNext("chen");
+                Log.i("ChenSdk", "chen ===== ");
+            }
+        });
+
+        Observer<String> observer = new Observer<String>() {
+            Disposable mDisposable;
+            @Override
+            public void onSubscribe(Disposable d) {
+                mDisposable = d;
+            }
+
+            @Override
+            public void onNext(String s) {
+                Log.i("ChenSdk", "onNext s = " + s);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.i("ChenSdk", "onError");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i("ChenSdk", "onComplete");
+            }
+        };
+
+        observable.subscribe(observer);
+
+        String[] names = {"Chen", "Yang", "Yu", "Li", "Cai"};
+        Observable.fromArray(names).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                Log.i("ChenSdk", "s = " + s);
+            }
+        });
+
+        int j = 0;
+        int jj = j++;
+        Log.i("ChenSdk", "j = " + j + ", jj = " + jj);
+        String str = "he你llo didi";
+        System.out.println(str.length());
+        // 码点数量
+        int strCount = str.codePointCount(0, str.length());
+        Log.i("ChenSdk", "strCount = " + strCount);
+        Log.i("ChenSdk", "str.charAt(0) = " + str.charAt(0));
+        Log.i("ChenSdk", "str.offsetByCodePoints(3, 2) = " + str.offsetByCodePoints(3, 2));
+        Log.i("ChenSdk", "str.codePointAt(2) = " + str.codePointAt(2));
+
+        try {
+            System.out.println("start...");
+            throw new Exception("你好");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            System.out.println("finally start...");
+        }
+
     }
 }

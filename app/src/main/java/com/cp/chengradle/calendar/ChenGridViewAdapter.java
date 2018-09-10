@@ -54,15 +54,24 @@ public class ChenGridViewAdapter extends BaseAdapter {
         } else {
             holder = (ChenHolder) convertView.getTag();
         }
+
         int currentDay = mCalendar.get(Calendar.DAY_OF_MONTH);
         mCalendar.set(Calendar.DAY_OF_MONTH, 1);
         int firstDay = mCalendar.get(Calendar.DAY_OF_WEEK);
         mCalendar.set(Calendar.DAY_OF_MONTH, currentDay);
         if (position + 1 < firstDay) {
             int currentMonth = mCalendar.get(Calendar.MONTH);
-            mCalendar.set(Calendar.MONTH, currentMonth - 1);
+            int currentYear = mCalendar.get(Calendar.YEAR);
+            if (currentMonth == 0) {
+                mCalendar.set(Calendar.MONTH, 11);
+                mCalendar.set(Calendar.YEAR, currentYear - 1);
+            } else {
+                mCalendar.set(Calendar.MONTH, currentMonth - 1);
+            }
+
             int text = mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH) + position + 2 - firstDay;
             mCalendar.set(Calendar.MONTH, currentMonth);
+            mCalendar.set(Calendar.YEAR, currentYear);
             holder.tx.setText("" + text);
             convertView.setBackgroundColor(Color.parseColor("#FA5555"));
         } else if (position + 1 - firstDay >= mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)){

@@ -44,7 +44,7 @@ public class CalenderActivity extends Activity {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.i("ChenSdk", "onPageScrolled position = " + position);
+//                Log.i("ChenSdk", "onPageScrolled position = " + position);
             }
 
             @Override
@@ -52,12 +52,12 @@ public class CalenderActivity extends Activity {
                 int year = (position + 1) / 12;
                 int month = (position + 1) % 12 + 1;
                 monthView.setText(year + "年" + month + "月");
-                Log.i("ChenSdk", "onPageSelected position = " + position);
+//                Log.i("ChenSdk", "onPageSelected position = " + position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                Log.i("ChenSdk", "onPageScrollStateChanged state = " + state);
+//                Log.i("ChenSdk", "onPageScrollStateChanged state = " + state);
             }
         });
         Log.i("ChenSdk", "DAY_OF_WEEK = " + Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
@@ -67,6 +67,9 @@ public class CalenderActivity extends Activity {
         Log.i("ChenSdk", "Calendar.MONTH = " + Calendar.getInstance().get(Calendar.MONTH));
         Log.i("ChenSdk", "Calendar.MONTH = " + Calendar.getInstance().getMaximum(Calendar.DAY_OF_MONTH));
         Log.i("ChenSdk", "Calendar.MONTH = " + Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, -1);
+        Log.i("ChenSdk", "year = " + calendar.get(Calendar.YEAR) + ", month = " + calendar.get(Calendar.MONTH));
 //        DAY_OF_WEEK:日一二三四五六：1,2,3,4,5,6,7
     }
 }

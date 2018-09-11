@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.cp.chengradle.R;
@@ -21,6 +24,7 @@ public class CalenderActivity extends Activity {
 
     private ViewPager viewPager;
     private TextView monthView;
+    private TextView detailTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,16 +32,21 @@ public class CalenderActivity extends Activity {
         setContentView(R.layout.activity_calendar_main);
         viewPager = findViewById(R.id.calendar_viewpager);
         monthView = findViewById(R.id.calendar_title);
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 300; i++) {
-            list.add("你好" + i);
-        }
+        detailTextView = findViewById(R.id.calendar_detail);
+        Animation animation = new ScaleAnimation(0, 0, 0, 200);
+        detailTextView.startAnimation(animation);
+
 
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int month = Calendar.getInstance().get(Calendar.MONTH);
         int count = year * 12 + month;
         monthView.setText(year + "年" + (month + 1) + "月");
-        CalendarPagerAdapter adapter = new CalendarPagerAdapter(this, count);
+        CalendarPagerAdapter adapter = new CalendarPagerAdapter(this, count, new CalendarPagerAdapter.ClickDelegate() {
+            @Override
+            public void click(View view, int index) {
+                detailTextView.setText("click view index is " + index);
+            }
+        });
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(count - 1);
         viewPager.setPageMargin(15);

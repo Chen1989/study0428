@@ -74,18 +74,26 @@ public class ChenGridViewAdapter extends BaseAdapter {
             mCalendar.set(Calendar.YEAR, currentYear);
             holder.tx.setText("" + text);
             convertView.setBackgroundColor(Color.parseColor("#FA5555"));
+            ((ChenHolder)convertView.getTag()).index = 0;
         } else if (position + 1 - firstDay >= mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)){
             holder.tx.setText("" + (position + 2 - firstDay - mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)));
             convertView.setBackgroundColor(Color.parseColor("#FA5555"));
+            ((ChenHolder)convertView.getTag()).index = 0;
         } else {
             holder.tx.setText("" + (position + 2 - firstDay));
             convertView.setBackgroundColor(Color.parseColor("#FAE8DA"));
+            ((ChenHolder)convertView.getTag()).index = 1;
         }
 
         return convertView;
     }
 
-    private class ChenHolder {
+    public void clickIndexView() {
+
+    }
+
+    public class ChenHolder {
         public TextView tx;
+        public int index;
     }
 }

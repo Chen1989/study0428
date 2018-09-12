@@ -80,5 +80,8 @@ public class CalenderActivity extends Activity {
         calendar.set(Calendar.MONTH, -1);
         Log.i("ChenSdk", "year = " + calendar.get(Calendar.YEAR) + ", month = " + calendar.get(Calendar.MONTH));
 //        DAY_OF_WEEK:日一二三四五六：1,2,3,4,5,6,7
+//        DownLoaderManger.getInstance(this).start("appleid",
+//                "http://192.168.1.157:7898/group1/M00/00/02/wKgBnVuYzyWAQYMeAHzHWDqki5k942.txt",
+//                33);
     }
 }

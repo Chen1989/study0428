@@ -11,10 +11,9 @@ import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.cp.chengradle.R;
+import com.cp.chengradle.algorithm.dp.DynamicProgramming;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by PengChen on 2018/9/7.
@@ -83,5 +82,9 @@ public class CalenderActivity extends Activity {
 //        DownLoaderManger.getInstance(this).start("appleid",
 //                "http://192.168.1.157:7898/group1/M00/00/02/wKgBnVuYzyWAQYMeAHzHWDqki5k942.txt",
 //                33);
+
+        int[] src = new int[]{2, 4, 5, 10, 12, 15, 18, 21, 28, 32, 36, 39, 45, 50, 57, 65};
+        int result = DynamicProgramming.dynamiRriverCrossing(src);
+        Log.i("ChenSdk", "result = " + result);
     }
 }

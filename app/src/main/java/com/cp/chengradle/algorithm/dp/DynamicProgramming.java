@@ -44,4 +44,35 @@ public class DynamicProgramming {
         }
         return results[resouce.length - 1];
     }
+
+    public static int Bagger01() {
+        int[] weight = new int[]{0,4,6,2,2,5,1};
+        int[] value = new int[]{0,8,10,6,3,7,2};
+        int[][] result = new int[7][13];
+        for(int i=1;i<=6;i++)
+        {
+            for(int j=1;j<=12;j++)
+            {
+                if(j>=weight[i])
+                    result[i][j]=max(result[i-1][j],result[i-1][j-weight[i]]+value[i]);
+
+                else
+                    result[i][j]=result[i-1][j];
+            }
+        }
+
+        for(int i=1;i<=6;i++)
+        {
+            for(int j=1;j<=12;j++)
+            {
+                Log.i("ChenSdk", "result[" + i + "][" + j + "] = " + result[i][j]);
+            }
+        }
+
+        return 0;
+    }
+
+    private static int max(int v1, int v2) {
+        return v1 > v2 ? v1 : v2;
+    }
 }

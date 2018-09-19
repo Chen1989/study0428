@@ -75,4 +75,62 @@ public class DynamicProgramming {
     private static int max(int v1, int v2) {
         return v1 > v2 ? v1 : v2;
     }
+
+    public static void fa(int num) {
+        BigInteger integer1 = BigInteger.valueOf(1);
+        BigInteger integer2 = BigInteger.valueOf(1);
+        BigInteger[] va = new BigInteger[num];
+        va[0] = integer1;
+        va[1] = integer2;
+        for (int i = 2; i < num; i++) {
+            va[i] = va[i - 1].add(va[i - 2]);
+        }
+        Log.i("ChenSdk", "va = " + va[num - 1].toString());
+        Log.i("ChenSdk", "va = " + va[num - 1].toString().length());
+    }
+
+    public static void fa2() {
+        BigInteger[] integers = new BigInteger[1000];
+        Log.i("ChenSdk", "va = " + faa(50, integers).toString());
+    }
+
+    private static BigInteger faa(int num, BigInteger[] integers) {
+        if (num < 3) {
+            return BigInteger.valueOf(1);
+        }
+        if (integers[num - 1] == null) {
+            integers[num - 1] = faa(num - 1, integers);
+        }
+        if (integers[num - 2] == null) {
+            integers[num - 2] = faa(num - 2, integers);
+        }
+        return integers[num - 1].add(integers[num - 2]);
+    }
+
+    public static void maxSubStr() {
+        int result = 0;
+        String str1 = "asnjdhjdssasasaff";
+        String str2 = "sasasasadjnjdf";
+        for (int i = 0; i < str1.length() - 1; i++) {
+            for (int j = 0; j < str2.length() - 1; j++) {
+                if (i == 0 || j == 0) {
+                    result = 0;
+                }
+                else if (str1.substring(i, i + 1).equals(str2.substring(j, j+1))) {
+                    result = result + 1;
+                    Log.i("ChenSdk", "result = " + result);
+                    if (i + 1 < str1.length()) {
+                        i++;
+                    } else {
+                        break;
+                    }
+
+                } else {
+                    result = 0;
+                }
+            }
+        }
+    }
+
+
 }

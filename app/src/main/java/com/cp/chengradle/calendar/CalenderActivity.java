@@ -87,5 +87,7 @@ public class CalenderActivity extends Activity {
         int result = DynamicProgramming.dynamiRriverCrossing(src);
         Log.i("ChenSdk", "result = " + result);
         DynamicProgramming.Bagger01();
+//        DynamicProgramming.fa(1000);
+        DynamicProgramming.maxSubStr();
     }
 }

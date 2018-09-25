@@ -3,6 +3,8 @@ package com.cp.chengradle.algorithm.dp;
 import android.util.Log;
 
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by PengChen on 2018/9/14.
@@ -51,15 +53,16 @@ public class DynamicProgramming {
         int[] weight = new int[]{0,4,6,2,2,5,1};
         int[] value = new int[]{0,8,10,6,3,7,2};
         int[][] result = new int[7][13];
+        Map<String, String> resultMap = new HashMap<String, String>();
         for(int i=1;i<=6;i++)
         {
             for(int j=1;j<=12;j++)
             {
-                if(j>=weight[i])
+                if(j>=weight[i]) {
                     result[i][j]=max(result[i-1][j],result[i-1][j-weight[i]]+value[i]);
-
-                else
+                } else {
                     result[i][j]=result[i-1][j];
+                }
             }
         }
 
@@ -72,6 +75,85 @@ public class DynamicProgramming {
         }
 
         return 0;
+    }
+
+    public static int Bagger02() {
+        int[] weight = new int[]{0,4,6,2,2,5,1};
+        int[] value = new int[]{0,8,10,6,3,7,2};
+
+        Map<String, Integer> resultMap = new HashMap<String, Integer>();
+        for(int i=1;i<=6;i++)
+        {
+            for(int j=1;j<=12;j++)
+            {
+                if(j>=weight[i]) {
+                    String index = (i - 1) + "," + j;
+                    int t1 = getValue(resultMap, index);
+                    String index2 = (i - 1) + "," + (j-weight[i]);
+                    int t2 = getValue(resultMap,index2) + value[i];
+                    resultMap.put(i + "," + j, max(t1, t2));
+
+                } else {
+                    String index2 = (i - 1) + "," + j;
+                    int t = getValue(resultMap,index2);
+                    if (t > 0) {
+                        resultMap.put(i + "," + j, t);
+                    }
+
+                }
+            }
+        }
+
+        for (String key : resultMap.keySet()) {
+            Log.i("ChenSdk",key + " : " + resultMap.get(key));
+        }
+
+        return 0;
+    }
+
+    public static int Bagger03() {
+        int[] weight = new int[]{0,4,6,2,2,5,1};
+        int[] value = new int[]{0,8,10,6,3,7,2};
+        int[] result = new int[13];
+
+        for(int i=1; i<= 6; i++)
+        {
+            for(int j=1;j<=12;j++)
+            {
+
+            }
+        }
+
+        for(int j=1;j<=12;j++)
+        {
+            for(int i=1; i<= 6; i++)
+            {
+                int tt = 0;
+                int temp = j;
+                int ii = i;
+                int re = 0;
+                for (int m = 1; m <= 6; m++) {
+                    if (temp >= weight[i] && result[j - 1] < result[temp - weight[i]] + value[i]) {
+                        result[j] = result[temp - weight[i]] + value[i];
+                    }
+                }
+
+            }
+        }
+
+        for (int i = 0; i < result.length; i++) {
+            Log.i("ChenSdk",i + " = " + result[i]);
+        }
+
+        return 0;
+    }
+
+    private static int getValue(Map<String, Integer> map, String key) {
+        if (map.containsKey(key)) {
+            return map.get(key);
+        } else {
+            return 0;
+        }
     }
 
     private static int max(int v1, int v2) {

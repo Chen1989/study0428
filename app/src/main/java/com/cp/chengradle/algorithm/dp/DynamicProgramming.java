@@ -116,33 +116,20 @@ public class DynamicProgramming {
         int[] value = new int[]{0,8,10,6,3,7,2};
         int[] result = new int[13];
 
-        for(int i=1; i<= 6; i++)
+        int i,j;
+        for(i=1;i<=6;i++)
         {
-            for(int j=1;j<=12;j++)
+            for(j=12;j>0;j--)
             {
-
-            }
-        }
-
-        for(int j=1;j<=12;j++)
-        {
-            for(int i=1; i<= 6; i++)
-            {
-                int tt = 0;
-                int temp = j;
-                int ii = i;
-                int re = 0;
-                for (int m = 1; m <= 6; m++) {
-                    if (temp >= weight[i] && result[j - 1] < result[temp - weight[i]] + value[i]) {
-                        result[j] = result[temp - weight[i]] + value[i];
-                    }
+                if(j-weight[i]>=0 && result[j]<=result[j-weight[i]]+value[i])//二维变一维
+                {
+                    result[j]=result[j-weight[i]]+value[i];
                 }
-
             }
         }
 
-        for (int i = 0; i < result.length; i++) {
-            Log.i("ChenSdk",i + " = " + result[i]);
+        for (int m = 0; m < result.length; m++) {
+            Log.i("ChenSdk",m + " = " + result[m]);
         }
 
         return 0;

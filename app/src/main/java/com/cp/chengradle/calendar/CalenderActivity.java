@@ -1,8 +1,13 @@
 package com.cp.chengradle.calendar;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -11,9 +16,13 @@ import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.cp.chengradle.R;
-import com.cp.chengradle.algorithm.dp.DynamicProgramming;
 
+import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Calendar;
+import java.util.Random;
+
+import dalvik.system.DexClassLoader;
 
 /**
  * Created by PengChen on 2018/9/7.
@@ -84,10 +93,106 @@ public class CalenderActivity extends Activity {
 //                33);
 
         int[] src = new int[]{2, 4, 5, 10, 12, 15, 18, 21, 28, 32, 36, 39, 45, 50, 57, 65};
-        int result = DynamicProgramming.dynamiRriverCrossing(src);
-        Log.i("ChenSdk", "result = " + result);
-        DynamicProgramming.Bagger03();
+//        int result = DynamicProgramming.dynamiRriverCrossing(src);
+        String ti = tttt("com");
+        getPermission();
+        Log.i("ChenSdk", "MApplication = " + ti + ", result = " + hexStringToByte(ti));
+//        DynamicProgramming.Bagger03();
 //        DynamicProgramming.fa(1000);
 //        DynamicProgramming.maxSubStr();
+        Log.i("ChenSdk", "MApplication " + getCacheDir());
+        Log.i("ChenSdk", "MApplication External " + Environment.getExternalStorageDirectory().getPath());
+        new File(getCacheDir() + "/test/test").mkdirs();
+        DexClassLoader loader = new DexClassLoader(Environment.getExternalStorageDirectory().getPath() +
+                "/test/tes1.apk", getCacheDir() + "/test/test",
+                null, getClassLoader());
+        DexClassLoader loader2 = new DexClassLoader(Environment.getExternalStorageDirectory().getPath() +
+                "/test/test02.apk", getCacheDir() + "/test/test",
+                null, getClassLoader());
+        Log.i("ChenSdk", "MApplication" + loader);
+        File file = new File(getCacheDir() + "/test/test");
+        String[] list = file.list();
+    }
+
+    void getPermission()
+    {
+        int permissionCheck1 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permissionCheck2 = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheck1 != PackageManager.PERMISSION_GRANTED || permissionCheck2 != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    124);
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == 124) {
+            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED))
+            {
+                Log.d("heihei","获取到权限了！");
+            }  else {
+                Log.d("heihei","搞不定啊！");
+            }
+        }
+    }
+
+
+
+    public static String getRealName(String enc) {
+        byte[] t1 = enc.getBytes(Charset.forName("UTF-8"));
+        byte[] re = new byte[t1.length - 1];
+        for (int i = 0; i < re.length; i++) {
+            re[i] = (byte) (t1[0] ^ t1[i + 1]);
+        }
+
+        return new String(re, Charset.forName("UTF-8"));
+    }
+
+    private String tttt(String world) {
+        byte te = (byte)new Random().nextInt();
+        byte[] wor = world.getBytes(Charset.forName("UTF-8"));
+        byte[] res = new byte[wor.length + 1];
+        res[0] = te;
+        for (int i = 0; i < wor.length; i++) {
+            res[i + 1] = (byte)(wor[i] ^ te);
+        }
+        return getRealName2(res);
+    }
+
+    private static final String getRealName2(byte[] var0) {
+        StringBuilder var1 = new StringBuilder();
+        byte[] var2 = var0;
+        int var3 = var0.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            byte var5 = var2[var4];
+            var1.append(Integer.toString((var5 & 255) + 256, 16).substring(1));
+        }
+
+        return var1.toString();
+    }
+
+    public static String hexStringToByte(String hex) {
+        int len = (hex.length() / 2);
+        byte[] result = new byte[len];
+        char[] achar = hex.toCharArray();
+        for (int i = 0; i < len; i++) {
+            int pos = i * 2;
+            result[i] = (byte) (toByte(achar[pos]) << 4 | toByte(achar[pos + 1]));
+        }
+
+        byte[] res = new byte[len - 1];
+        for (int i = 0; i < len - 1; i++) {
+            res[i] = (byte) (result[0] ^ result[i + 1]);
+        }
+
+        return new String(res);
+    }
+
+    private static int toByte(char c) {
+        byte b = (byte) "0123456789abcdef".indexOf(c);
+        return b;
     }
 }

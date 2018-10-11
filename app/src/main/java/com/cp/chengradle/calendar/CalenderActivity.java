@@ -16,8 +16,12 @@ import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.cp.chengradle.R;
+import com.cp.chengradle.serializable.DataException;
+import com.cp.chengradle.serializable.DataMapping;
+import com.cp.chengradle.serializable.json.JsonSource;
 
 import java.io.File;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Random;
@@ -112,6 +116,39 @@ public class CalenderActivity extends Activity {
         Log.i("ChenSdk", "MApplication" + loader);
         File file = new File(getCacheDir() + "/test/test");
         String[] list = file.list();
+        try {
+            Person p = new Person("computer", 200);
+            String str = DataMapping.instance(JsonSource.format()).convert(p).toString();
+            Log.i("ChenSdk", "str = " + str);
+//            DataMapping.instance(JsonSource.format()).convert(JsonSource.object(""), null);
+        } catch (DataException e) {
+            e.printStackTrace();
+        }
+    }
+
+    class Person implements Serializable{
+        int age;
+        String name;
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 
     void getPermission()

@@ -3,6 +3,7 @@ package com.cp.chengradle.calendar;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -126,6 +127,20 @@ public class CalenderActivity extends Activity {
         }
     }
 
+    //检测是否是虚拟机
+    //https://blog.csdn.net/tianshuai4317618/article/details/78834683/
+    private static boolean isFeatures() {
+        return Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.toLowerCase().contains("vbox")
+                || Build.FINGERPRINT.toLowerCase().contains("test-keys")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk".equals(Build.PRODUCT);
+    }
+
     class Person implements Serializable{
         int age;
         String name;
@@ -134,21 +149,21 @@ public class CalenderActivity extends Activity {
             this.age = age;
         }
 
-        public int getAge() {
-            return age;
-        }
-
-        public void setAge(int age) {
-            this.age = age;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
+//        public int getAge() {
+//            return age;
+//        }
+//
+//        public void setAge(int age) {
+//            this.age = age;
+//        }
+//
+//        public String getName() {
+//            return name;
+//        }
+//
+//        public void setName(String name) {
+//            this.name = name;
+//        }
     }
 
     void getPermission()

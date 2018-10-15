@@ -371,7 +371,8 @@ public class Type
 
     public static Type getType(Object obj)
     {
-        return getType(obj, "Method");
+        //Field;Method
+        return getType(obj, "Field");
     }
 
     public static Type getType(Class<?> cls, String t)

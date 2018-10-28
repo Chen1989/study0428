@@ -2,14 +2,20 @@ package com.cp.chengradle.calendar;
 
 import android.Manifest;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,17 +23,18 @@ import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.cp.chengradle.R;
-import com.cp.chengradle.serializable.DataException;
-import com.cp.chengradle.serializable.DataMapping;
-import com.cp.chengradle.serializable.json.JsonSource;
+import com.cp.chengradle.service.ChenService;
 
-import java.io.File;
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.net.NetworkInterface;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Random;
-
-import dalvik.system.DexClassLoader;
 
 /**
  * Created by PengChen on 2018/9/7.
@@ -48,7 +55,6 @@ public class CalenderActivity extends Activity {
         detailTextView = findViewById(R.id.calendar_detail);
         Animation animation = new ScaleAnimation(0, 0, 0, 200);
         detailTextView.startAnimation(animation);
-
 
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int month = Calendar.getInstance().get(Calendar.MONTH);
@@ -105,25 +111,101 @@ public class CalenderActivity extends Activity {
 //        DynamicProgramming.Bagger03();
 //        DynamicProgramming.fa(1000);
 //        DynamicProgramming.maxSubStr();
-        Log.i("ChenSdk", "MApplication " + getCacheDir());
-        Log.i("ChenSdk", "MApplication External " + Environment.getExternalStorageDirectory().getPath());
-        new File(getCacheDir() + "/test/test").mkdirs();
-        DexClassLoader loader = new DexClassLoader(Environment.getExternalStorageDirectory().getPath() +
-                "/test/tes1.apk", getCacheDir() + "/test/test",
-                null, getClassLoader());
-        DexClassLoader loader2 = new DexClassLoader(Environment.getExternalStorageDirectory().getPath() +
-                "/test/test02.apk", getCacheDir() + "/test/test",
-                null, getClassLoader());
-        Log.i("ChenSdk", "MApplication" + loader);
-        File file = new File(getCacheDir() + "/test/test");
-        String[] list = file.list();
+//        Log.i("ChenSdk", "MApplication " + getCacheDir());
+//        Log.i("ChenSdk", "MApplication External " + Environment.getExternalStorageDirectory().getPath());
+//        new File(getCacheDir() + "/test/test").mkdirs();
+//        DexClassLoader loader = new DexClassLoader(Environment.getExternalStorageDirectory().getPath() +
+//                "/test/tes1.apk", getCacheDir() + "/test/test",
+//                null, getClassLoader());
+//        DexClassLoader loader2 = new DexClassLoader(Environment.getExternalStorageDirectory().getPath() +
+//                "/test/test02.apk", getCacheDir() + "/test/test",
+//                null, getClassLoader());
+//        Log.i("ChenSdk", "MApplication" + loader);
+//        File file = new File(getCacheDir() + "/test/test");
+//        String[] list = file.list();
+//        try {
+//            Person p = new Person("computer", 200);
+//            String str = DataMapping.instance(JsonSource.format()).convert(p).toString();
+//            Log.i("ChenSdk", "str = " + str);
+////            DataMapping.instance(JsonSource.format()).convert(JsonSource.object(""), null);
+//        } catch (DataException e) {
+//            e.printStackTrace();
+//        }
+        notHasLightSensorManager(this);
+        notHasBlueTooth();
+//        isWifiProxy(this);
+//        isVpnUsed();
+        Log.d("ChenSdk", "isVpnUsed() : " + isVpnUsed());
+//        try {
+//            int versionCode = getPackageManager().getPackageInfo("com.hwgg.pk", 0).versionCode;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
+        startService(new Intent(getApplicationContext(), ChenService.class));
         try {
-            Person p = new Person("computer", 200);
-            String str = DataMapping.instance(JsonSource.format()).convert(p).toString();
-            Log.i("ChenSdk", "str = " + str);
-//            DataMapping.instance(JsonSource.format()).convert(JsonSource.object(""), null);
-        } catch (DataException e) {
+            String processName = getCurrentProcessName();
+            Log.d("ChenSdk", "processName : " + processName);
+            Log.d("ChenSdk", "md5ProcessName : " + md5ProcessName());
+        } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static String md5ProcessName() {
+        String processName = "";
+        try {
+            processName = getCurrentProcessName();
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            // 计算md5函数
+            md.update(processName.getBytes());
+            StringBuilder var1 = new StringBuilder();
+            byte[] var2 = md.digest();
+            int var4 = 0;
+            for(; var4 < var2.length; ) {
+                var1.append(Integer.toString((var2[var4] & 255) + 256, 16).substring(1));
+                var4++;
+            }
+
+            return var1.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return processName;
+    }
+
+    /**
+     * 返回当前的进程名
+     */
+    public static String getCurrentProcessName()throws Exception {
+
+        //1. 通过ActivityThread中的currentActivityThread()方法得到ActivityThread的实例对象
+        Class<?> activityThreadClass = Class.forName("android.app.ActivityThread");
+        activityThreadClass.getDeclaredMethods();
+        Method method = activityThreadClass.getDeclaredMethod("currentProcessName");
+        Object processName = method.invoke(null);
+
+        //2. 通过activityThread的getProcessName() 方法获取进程名
+//        Method getProcessNameMethod = activityThreadClass.getDeclaredMethod("getProcessName", activityThreadClass);
+//        Object processName = getProcessNameMethod.invoke(activityThread);
+
+        return processName.toString();
+    }
+
+    /**
+     * 判断是否存在光传感器来判断是否为模拟器
+     * 部分真机也不存在温度和压力传感器。其余传感器模拟器也存在。
+     * @return true 为模拟器
+     */
+    public static Boolean notHasLightSensorManager(Context context) {
+        SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        Sensor sensor8 = null; //光
+        if (sensorManager != null) {
+            sensor8 = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        }
+        if (null == sensor8) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -139,6 +221,62 @@ public class CalenderActivity extends Activity {
                 || Build.MANUFACTURER.contains("Genymotion")
                 || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
                 || "google_sdk".equals(Build.PRODUCT);
+    }
+
+    public boolean notHasBlueTooth() {
+        BluetoothAdapter ba = BluetoothAdapter.getDefaultAdapter();
+        if (ba == null) {
+            return true;
+        } else {
+            // 如果有蓝牙不一定是有效的。获取蓝牙名称，若为null 则默认为模拟器
+            String name = ba.getName();
+            if (TextUtils.isEmpty(name)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /*
+* 判断设备 是否使用代理上网
+* */
+    private boolean isWifiProxy(Context context) {
+// 是否大于等于4.0
+        final boolean IS_ICS_OR_LATER = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+        String proxyAddress;
+        int proxyPort;
+        if (IS_ICS_OR_LATER) {
+            proxyAddress = System.getProperty("http.proxyHost");
+            String portStr = System.getProperty("http.proxyPort");
+            proxyPort = Integer.parseInt((portStr != null ? portStr : "-1"));
+        } else {
+            proxyAddress = android.net.Proxy.getHost(context);
+            proxyPort = android.net.Proxy.getPort(context);
+        }
+        return (!TextUtils.isEmpty(proxyAddress)) && (proxyPort != -1);
+    }
+
+    public boolean isVpnUsed() {
+        List<PackageInfo> list = getPackageManager().getInstalledPackages(0);
+        Log.d("ChenSdk", "getInstalledPackages : " + list);
+        try {
+            Enumeration<NetworkInterface> niList = NetworkInterface.getNetworkInterfaces();
+            if(niList != null) {
+                for (NetworkInterface intf : Collections.list(niList)) {
+                    if(!intf.isUp() || intf.getInterfaceAddresses().size() == 0) {
+                        continue;
+                    }
+                    Log.d("ChenSdk", "isVpnUsed() NetworkInterface Name: " + intf.getName());
+                    if ("tun0".equals(intf.getName()) || "ppp0".equals(intf.getName())){
+                        return true; // The VPN is up
+                    }
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     class Person implements Serializable{

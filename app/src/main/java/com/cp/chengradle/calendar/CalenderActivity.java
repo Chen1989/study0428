@@ -4,11 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,9 +20,9 @@ import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.cp.chengradle.R;
-import com.cp.chengradle.service.ChenService;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.NetworkInterface;
 import java.nio.charset.Charset;
@@ -131,24 +128,57 @@ public class CalenderActivity extends Activity {
 //        } catch (DataException e) {
 //            e.printStackTrace();
 //        }
-        notHasLightSensorManager(this);
-        notHasBlueTooth();
+        boolean b = notHasLightSensorManager1(getBaseContext());
+        Log.i("ChenSdk", "result = " + b);
+        notHasBlueTooth1(this);
 //        isWifiProxy(this);
 //        isVpnUsed();
-        Log.d("ChenSdk", "isVpnUsed() : " + isVpnUsed());
+//        Log.d("ChenSdk", "isVpnUsed() : " + isVpnUsed());
 //        try {
 //            int versionCode = getPackageManager().getPackageInfo("com.hwgg.pk", 0).versionCode;
 //        } catch (PackageManager.NameNotFoundException e) {
 //            e.printStackTrace();
 //        }
-        startService(new Intent(getApplicationContext(), ChenService.class));
+//        startService(new Intent(getApplicationContext(), ChenService.class));
+//        try {
+//            String processName = getCurrentProcessName();
+//            Log.d("ChenSdk", "processName : " + processName);
+//            Log.d("ChenSdk", "md5ProcessName : " + md5ProcessName());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    public Object invokeMethod(Class<?> cl, Object host, String name, Class<?>[] clsArray, Object... pArray) {
         try {
-            String processName = getCurrentProcessName();
-            Log.d("ChenSdk", "processName : " + processName);
-            Log.d("ChenSdk", "md5ProcessName : " + md5ProcessName());
-        } catch (Exception e) {
+            Method method = cl.getDeclaredMethod(name, clsArray);
+            method.setAccessible(true);
+            return method.invoke(host, pArray);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public boolean notHasBlueTooth1(Context context) {
+        try {
+            Class cl = context.getClassLoader().loadClass("android.bluetooth.BluetoothAdapter");
+            Object ob = invokeMethod(cl, null, "getDefaultAdapter", null);
+            if (ob == null) {
+                return true;
+            }
+            Object result = invokeMethod(cl, ob, "getName", null);
+            if (result == null) {
+                return true;
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static String md5ProcessName() {
@@ -191,22 +221,73 @@ public class CalenderActivity extends Activity {
         return processName.toString();
     }
 
+    private Boolean notHasLightSensorManager1(Context context) {
+
+        try {
+            Class cc = context.getClassLoader().loadClass("android.content.Context");
+            Object ob = invokeMethod(cc, context, "getSystemService",
+                    new Class[]{String.class},
+                    "sensor");
+            if (ob == null) {
+                return true;
+            }
+            Class cl = context.getClassLoader().loadClass("android.hardware.SensorManager");
+            Object re = invokeMethod(cl, ob, "getDefaultSensor", new Class[]{int.class}, 5);
+            if (re == null) {
+                return true;
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
     /**
      * 判断是否存在光传感器来判断是否为模拟器
      * 部分真机也不存在温度和压力传感器。其余传感器模拟器也存在。
      * @return true 为模拟器
      */
     public static Boolean notHasLightSensorManager(Context context) {
-        SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        Sensor sensor8 = null; //光
-        if (sensorManager != null) {
-            sensor8 = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+
+        try {
+            Log.i("ChenSdk", "class = " + context.getClass());
+            Log.i("ChenSdk", "class = " + Context.class);
+            Method method = Context.class.getDeclaredMethod("getSystemService", String.class);
+            method.setAccessible(true);
+            Object ob = method.invoke(context, Context.SENSOR_SERVICE);
+            Log.i("ChenSdk", "result ob = " + ob);
+            if (ob == null) {
+                return true;
+            }
+            Class sensorClass = context.getClassLoader().loadClass("android.hardware.SensorManager");
+            Method sensor = sensorClass.getDeclaredMethod("getDefaultSensor", int.class);
+            sensor.setAccessible(true);
+            Object re = sensor.invoke(ob, 5);
+            Log.i("ChenSdk", "result rev= " + re);
+            if (re == null) {
+                return true;
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
-        if (null == sensor8) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
+//        SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+//        Sensor sensor8 = null; //光
+//        if (sensorManager != null) {
+//            sensor8 = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+//        }
+//        if (null == sensor8) {
+//            return true;
+//        } else {
+//            return false;
+//        }
     }
 
     //检测是否是虚拟机

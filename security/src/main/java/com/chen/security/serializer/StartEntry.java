@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
+import java.util.Random;
 
 /**
  * Created by PengChen on 2018/9/29.
@@ -30,7 +32,12 @@ public class StartEntry {
 //        } catch (ClassNotFoundException e) {
 //            e.printStackTrace();
 //        }
-        writeFile3();
+//        writeFile4();
+//        deleteDirectory(new File("D:\\app\\ca"));
+        Random random = new Random();
+        for (int i = 0; i < 100; i++) {
+            System.out.println("getAbsolutePath nextInt = " + random.nextInt());
+        }
     }
 
     private static void writeFile1() {
@@ -82,6 +89,44 @@ public class StartEntry {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private static void writeFile4() {
+        try {
+            File file = new File("D:\\app\\ca\\ca\\1027.txt");
+            System.out.println("getAbsolutePath = " + file.getAbsolutePath());
+            System.out.println("getAbsolutePath = " +
+                    file.getAbsolutePath().lastIndexOf(File.separator));
+            String parent = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(File.separator));
+            System.out.println("parent = " + parent);
+
+            new File(parent).mkdirs();
+            System.out.println("parent list = " + new File(parent).getParentFile().listFiles());
+            RandomAccessFile accessFile = new RandomAccessFile(file, "rwd");
+//            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream("D:\\app\\1027.txt"));
+            accessFile.write("aaa".getBytes());
+            accessFile.write("你好,world!你好,world!你好,world!".getBytes());
+            accessFile.close();//写完之后这一句必须调用
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deleteDirectory(File file) {
+        if (file.isFile()) {// 表示该文件不是文件夹
+            file.delete();
+        } else {
+            // 首先得到当前的路径
+//            String[] childFilePaths = file.list();
+            File[] childFiles = file.listFiles();
+            for (File childFile : childFiles) {
+                deleteDirectory(childFile);
+            }
+            file.delete();
         }
     }
 

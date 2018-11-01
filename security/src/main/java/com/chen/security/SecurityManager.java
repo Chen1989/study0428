@@ -20,40 +20,37 @@ public class SecurityManager {
 
     public static void main(String[] args) {
 
-//        if (args == null || args.length < 1) {
-//            System.out.println("no parameter");
-//            return;
-//        }
-//
-//        if (args.length == 3) {
-//            if (args[0].equalsIgnoreCase("enckey")) {
-//                encryptKey(args[1], args[2]);
-//            }
-//        }
-//
-//        if (args.length == 4) {
-//            if (args[0].equalsIgnoreCase("encrypt")) {
-//                try {
-//                    encrypt(args[1], args[2], Integer.parseInt(args[3]));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        } else if (args.length == 5){
-//            if (args[0].equalsIgnoreCase("enc") && args[1].equalsIgnoreCase("smix")) {
-//                try {
-//                    encryptSimx(args[2], args[3], args[4]);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-        String input = "D:\\app\\js\\chen.txt";
-        String output = "D:\\app\\js\\chen1.txt";
-        String output2 = "D:\\app\\js\\chen2.txt";
-        encryptKey(input, output);
-        testDecKey(output, output2);
+        if(args != null && args.length >= 1) {
+            if (args.length == 3) {
+                if (args[0].equalsIgnoreCase("enckey")) {
+                    encryptKey(args[1], args[2]);
+                } else if (args[0].equalsIgnoreCase("enc_num")){
+                    encryptNum(args[1], args[2]);
+                }
+            } else if (args.length == 4 && args[0].equalsIgnoreCase("encrypt")) {
+                try {
+                    encrypt(args[1], args[2], Integer.parseInt(args[3]));
+                } catch (IOException var3) {
+                    var3.printStackTrace();
+                }
+            } else if (args.length == 5 && args[0].equalsIgnoreCase("enc")
+                    && args[1].equalsIgnoreCase("smix")) {
+                try {
+                    encryptSimx(args[2], args[3], args[4]);
+                } catch (IOException var2) {
+                    var2.printStackTrace();
+                }
+            }
+
+        } else {
+            System.out.println("no parameter");
+        }
+
+//        String input = "D:\\app\\js\\chen.txt";
+//        String output = "D:\\app\\js\\chen1.txt";
+//        String output2 = "D:\\app\\js\\chen2.txt";
+//        encryptKey(input, output);
+//        testDecKey(output, output2);
     }
 
     private static void testDecKey(String inStr, String outStr) {
@@ -62,6 +59,21 @@ public class SecurityManager {
             FileOutputStream outputStream2 = new FileOutputStream(outStr);
             write(in, outputStream2);
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private static void encryptNum(String inStr, String outStr) {
+        try {
+            FileInputStream in = new FileInputStream(inStr);
+            KeySecurityOutputStream5 outputStream2 = new KeySecurityOutputStream5(new FileOutputStream(outStr));
+            write(in, outputStream2);
+            in.close();
+            outputStream2.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -203,6 +215,72 @@ public class SecurityManager {
 
         public void write(int b) throws IOException {
             throw new IOException("not support write");
+        }
+    }
+
+    //第一位一个数字，表示加密用到的字节数；
+    public static class KeySecurityOutputStream5 extends OutputStream {
+        private OutputStream _out;
+        private int _index = 0;
+        private byte[] byteArr;
+        private int _num;
+
+        KeySecurityOutputStream5(OutputStream outputStream) throws IOException {
+            _out = outputStream;
+            Random random = new Random();
+            _num = random.nextInt(4) + 4;
+            byteArr = new byte[_num + 1];
+            byteArr[0] = (byte) _num;
+            for (int i = 1; i <= _num; i++) {
+                byteArr[i] = (byte) random.nextInt();
+            }
+            _out.write(byteArr);
+        }
+
+        public void write(byte[] b, int off, int len) throws IOException {
+            for (int i = off; i < len; i++) {
+                b[i] = (byte) (((b[i] & 0xff) >>> 4) | ((b[i] & 0xff) << 4));
+                b[i] = (byte) ((~b[i]) ^ byteArr[_index % _num + 1]);
+                _index++;
+            }
+            this._out.write(b, off, len);
+        }
+
+        @Override
+        public void write(int b) throws IOException {
+
+        }
+    }
+
+    public static class KeySecurityInputStream5 extends InputStream {
+        private InputStream _in;
+        private int _index = 0;
+        private int _num;
+        private byte[] _code;
+
+        KeySecurityInputStream5(InputStream in) throws IOException {
+            _in = in;
+            byte[] tempArr = new byte[1];
+            _in.read(tempArr, 0, 1);
+            _num = tempArr[0];
+            _code = new byte[_num];
+            _in.read(_code, 0, _num);
+        }
+
+        public int read(byte[] b, int off, int len) throws IOException
+        {
+            int length = _in.read(b, off, len);
+            for (int i = off; i < length; i++) {
+                b[i] = (byte) ~(b[i] ^ _code[_index % _num]);
+                b[i] = (byte) (((b[i] & 0xff) >>> 4) | ((b[i] & 0xff) << 4));
+                _index++;
+            }
+            return length;
+        }
+
+        @Override
+        public int read() throws IOException {
+            return 0;
         }
     }
 

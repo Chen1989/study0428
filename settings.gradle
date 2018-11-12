@@ -28,7 +28,7 @@ def initMinshengGradleEnvironment(){
 //初始化
 //initMinshengGradleEnvironment()
 
-include ':app'
+include ':app', ':tea'
 include ':gradlelib'
 include 'security'
 

@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/gradlelib" />
             <option value="$PROJECT_DIR$/security" />
+            <option value="$PROJECT_DIR$/tea" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

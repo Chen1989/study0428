@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
-import java.util.Random;
 
 /**
  * Created by PengChen on 2018/9/29.
@@ -34,10 +33,16 @@ public class StartEntry {
 //        }
 //        writeFile4();
 //        deleteDirectory(new File("D:\\app\\ca"));
-        Random random = new Random();
-        for (int i = 0; i < 100; i++) {
-            System.out.println("getAbsolutePath nextInt = " + random.nextInt());
-        }
+//        Random random = new Random();
+//        for (int i = 0; i < 100; i++) {
+//            System.out.println("getAbsolutePath nextInt = " + random.nextInt());
+//        }
+//        File file = new File("D:\\app\\ca");
+//        String[] listFile = file.list();
+//        for (int i = 0; i < listFile.length; i++) {
+//            System.out.println("listFile nextInt = " + listFile[i]);
+//        }
+        FileUtil.readFile();
     }
 
     private static void writeFile1() {

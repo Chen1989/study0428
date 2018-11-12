@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.cp.chengradle.R;
+import com.cp.chengradle.service.ChenService;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -134,12 +136,13 @@ public class CalenderActivity extends Activity {
 //        isWifiProxy(this);
 //        isVpnUsed();
 //        Log.d("ChenSdk", "isVpnUsed() : " + isVpnUsed());
-//        try {
-//            int versionCode = getPackageManager().getPackageInfo("com.hwgg.pk", 0).versionCode;
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        startService(new Intent(getApplicationContext(), ChenService.class));
+        try {
+            int versionCode = getPackageManager().getPackageInfo("com.hwgg.zwdzjs", 0).versionCode;
+            Log.i("ChenSdk", "versionCode = " + versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        startService(new Intent(getApplicationContext(), ChenService.class));
 //        try {
 //            String processName = getCurrentProcessName();
 //            Log.d("ChenSdk", "processName : " + processName);

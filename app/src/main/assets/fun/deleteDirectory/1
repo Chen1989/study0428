@@ -1,0 +1,15 @@
+{
+"codeData":"    public void deleteDirectory(File file) {
+                    if (file.isFile()) {
+                        file.delete();
+                    } else {
+                        File[] childFiles = file.listFiles();
+                        if (childFiles != null) {
+                            for (File childFile : childFiles) {
+                                deleteDirectory1(childFile);
+                            }
+                        }
+                        file.delete();
+                    }
+                }"
+}

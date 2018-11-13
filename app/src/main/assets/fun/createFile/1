@@ -1,0 +1,26 @@
+{
+"methodList":"",
+"classList":"",
+"strList":"",
+"className":"",
+"funName":"createFile",
+"isStatic":false,
+
+"parameter":"p0",
+"parameterType":"",
+"importInfo":"java.io.File,java.io.IOException",
+"merge":true,
+"merged":true,
+"result":"",
+
+"codeData":"    public void createFile(File p0) throws IOException {
+                    if (!p0.exists()) {
+                        String path = p0.getAbsolutePath();
+                        String parent = path.substring(0, path.lastIndexOf(File.separator));
+                        File parentFile = new File(parent);
+                        if (!parentFile.exists()) {
+                            parentFile.mkdirs();
+                        }
+                        p0.createNewFile();
+                    }
+                }"}

@@ -1,0 +1,22 @@
+{
+"methodList":"decodeStr",
+"classList":"",
+"strList":"",
+"className":"",
+"funName":"getCurrentProcessName",
+"isStatic":false,
+
+"parameter":"currentA,currentB",
+"parameterType":"",
+"importInfo":"",
+"merge":false,
+"merged":true,
+"result":"String",
+
+"codeData":"    public String getCurrentProcessName(String currentA,String currentB) throws ClassNotFoundException {
+                     String classStr = decodeStr(currentA);
+                     String methodStr = decodeStr(currentB);
+                     Object processName = invokeCheckMethod(
+                             Class.forName(classStr), null, methodStr, null);
+                     return processName.toString();
+                 }"}

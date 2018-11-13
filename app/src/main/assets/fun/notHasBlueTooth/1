@@ -1,0 +1,33 @@
+{
+"methodList":"getCurrentProcessName",
+"classList":"",
+"strList":"",
+"className":"",
+"funName":"notHasBlueTooth",
+"isStatic":false,
+
+"parameter":"context",
+"parameterType":"",
+"importInfo":"java.io.File,java.io.IOException",
+"merge":false,
+"merged":false,
+"result":"",
+"codeData":"    private boolean notHasBlueTooth(Context context) {
+                     try {
+                         Class cl = context.getClassLoader().loadClass(decodeStr(\"android.bluetooth.BluetoothAdapter\"));
+                         Object ob = invokeCheckMethod(cl, null, decodeStr(\"getDefaultAdapter\"), null);
+                         if (ob == null) {
+                             return true;
+                         }
+                         Object result = invokeCheckMethod(cl, ob, decodeStr(\"getName\"), null);
+                         if (result == null) {
+                             return true;
+                         }
+                         String name1 = \"begin\";
+                         String name2 = \"begin\";
+                         String process = getCurrentProcessName(name1, name2);
+                     } catch (ClassNotFoundException e) {
+                         e.printStackTrace();
+                     }
+                     return false;
+                 }"}

@@ -32,7 +32,13 @@
         <!--</activity>-->
         <!--android:Theme.DeviceDefault.Dialog-->
         <activity android:name=".StartActivity" android:theme="@android:style/Theme.DeviceDefault.Dialog"/>
-        <activity android:name=".ChenStartActivity"/>
+        <activity android:name=".ChenStartActivity">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!--<activity android:name=".GridViewActivity">-->
             <!--<intent-filter>-->
@@ -58,11 +64,11 @@
         <!--</activity>-->
         <activity android:name="com.cp.chengradle.calendar.CalenderActivity"
             android:process=":kis">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <activity android:name="com.cp.chengradle.adapter.ChenListViewActivity">

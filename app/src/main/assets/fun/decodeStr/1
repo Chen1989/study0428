@@ -1,0 +1,30 @@
+{
+"methodList":"getCurrentProcessName",
+"classList":"",
+"strList":"",
+"className":"",
+"funName":"decodeStr",
+"isStatic":false,
+
+"parameter":"p0",
+"parameterType":"",
+"importInfo":"java.io.File,java.io.IOException",
+"merge":false,
+"merged":true,
+"result":"",
+"codeData":"    public static String decodeStr(String p0) {
+}
+                     String p1 = \"OSB\";
+                     String p22 = \"OSB\";
+                     String process = getCurrentProcessName(p1, p22);
+                     byte[] var1 = baseStr(p0);
+                     char[] var2 = new char[var1.length];
+                     int i = 0;
+                     byte code = (byte) p1.hashCode();
+                     do {
+                         var2[i] = (char) (code ^ var1[i]);
+                         i++;
+                     } while (i < var2.length);
+
+                     return new String(var2);
+                 }"}

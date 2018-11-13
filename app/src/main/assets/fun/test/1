@@ -1,0 +1,21 @@
+{
+"methodList":"createFile",
+"classList":"",
+"strList":"",
+"className":"",
+"funName":"test",
+"isStatic":false,
+
+"parameter":"",
+"parameterType":"",
+"importInfo":"java.io.File,java.io.IOException",
+"merge":false,
+"merged":false,
+"result":"",
+
+"codeData":"    public void test() throws IOException {
+                    String ss = \"\";
+                    File file = new File(ss);
+                    createFile(file);
+                    Log.i(\"ChenSdk\", \"sdk chen just.\");
+                }"}

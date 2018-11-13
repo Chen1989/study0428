@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/security/security.iml" filepath="$PROJECT_DIR$/security/security.iml" />
       <module fileurl="file://$PROJECT_DIR$/study0428.iml" filepath="$PROJECT_DIR$/study0428.iml" />
       <module fileurl="file://$PROJECT_DIR$/tea/tea.iml" filepath="$PROJECT_DIR$/tea/tea.iml" />
+      <module fileurl="file://D:\android\workspaces\study0428\tea\tea.iml" filepath="D:\android\workspaces\study0428\tea\tea.iml" />
     </modules>
   </component>
 </project>

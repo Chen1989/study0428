@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by PengChen on 2018/11/13.
@@ -41,11 +42,28 @@ public class ReadFile {
             //合并操作
             mergeFunctions(infoArrayList);
             Log.i("ChenSdk", "infoArrayList.size() = " + infoArrayList.size());
+            Random random = new Random();
+            int classNum = random.nextInt(3) + 2;
+            ArrayList<ClassInfo> classInfos = new ArrayList<>(classNum);
+            for (int i = 0; i < classNum; i++) {
+                ClassInfo classInfo = new ClassInfo();
+                classInfo.className = "ClassName" + i;
+                classInfo.functionInfos.add(infoArrayList.remove(random.nextInt(infoArrayList.size())));
+                classInfos.add(classInfo);
+            }
+            while (!infoArrayList.isEmpty()) {
+                int cl = random.nextInt(classNum);
+                classInfos.get(cl).functionInfos.add(infoArrayList.remove(0));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void writeClasses(ArrayList<ClassInfo> classInfos) {
+
     }
 
     private FunctionInfo setFunctionInfo(String json) {
@@ -161,6 +179,8 @@ public class ReadFile {
                                 }
                             }
                         }
+                        info.methodList.addAll(functionInfos.get(i).methodList);
+                        info.classList.addAll(functionInfos.get(i).classList);
                         Log.i("ChenSdk", "code = " + info.codeData);
                     }
 

@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -40,18 +41,27 @@ public class FileUtil {
             Random random = new Random();
             int classNum = random.nextInt(2) + 2;
             ArrayList<ClassInfo> classInfos = new ArrayList<>(classNum);
+            HashMap<String, String> funClassMap = new HashMap<>();
             for (int i = 0; i < classNum; i++) {
                 ClassInfo classInfo = new ClassInfo();
                 classInfo.className = "ClassName" + i;
                 classInfo.functionInfos = new ArrayList<FunctionInfo>();
                 System.out.println("ChenSdk ----- infoArrayList.size() i " + i);
-                classInfo.functionInfos.add(infoArrayList.remove(random.nextInt(infoArrayList.size())));
+                FunctionInfo info = infoArrayList.remove(random.nextInt(infoArrayList.size()));
+                info.className = "ClassName" + i;
+                classInfo.functionInfos.add(info);
                 classInfos.add(classInfo);
+                funClassMap.put(info.funName, classInfo.className);
             }
             while (!infoArrayList.isEmpty()) {
                 int cl = random.nextInt(classNum);
-                classInfos.get(cl).functionInfos.add(infoArrayList.remove(0));
+                FunctionInfo cc = infoArrayList.remove(0);
+                cc.className = classInfos.get(cl).className;
+                classInfos.get(cl).functionInfos.add(cc);
+                funClassMap.put(cc.funName, classInfos.get(cl).className);
             }
+            replaceFun(classInfos, funClassMap);
+            writeClasses(classInfos);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -59,9 +69,54 @@ public class FileUtil {
         }
     }
 
+    private void replaceFun(ArrayList<ClassInfo> classInfos, HashMap<String, String> funClassMap) {
+        for (ClassInfo classInfo : classInfos) {
+            for (FunctionInfo funInfo : classInfo.functionInfos) {
+                if (funInfo.methodList != null) {
+                    for (String name : funInfo.methodList) {
+                        if (funInfo.isStatic) {
+                            funInfo.codeData = funInfo.codeData.replaceAll(name, funClassMap.get(name) + "." + name);
+                        } else {
+                            funInfo.codeData = funInfo.codeData.replaceAll(name, "new " + funClassMap.get(name) + "()." + name);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private void writeClasses(ArrayList<ClassInfo> classInfos) {
+        String path = "D:\\workspace\\work\\Auto\\result";
+        deleteDirectory(new File(path));
+        for (int i = 0; i < classInfos.size(); i++) {
+            ClassInfo info = classInfos.get(i);
+            info.writeSelf(path);
+        }
+    }
 
+    public void deleteDirectory(File file) {
+
+        File[] childFiles = file.listFiles();
+        if (childFiles != null) {
+            for (File childFile : childFiles) {
+                childFile.delete();
+            }
+        }
+
+    }
+
+    public void deleteDirectory1(File file) {
+        if (file.isFile()) {
+            file.delete();
+        } else {
+            File[] childFiles = file.listFiles();
+            if (childFiles != null) {
+                for (File childFile : childFiles) {
+                    deleteDirectory1(childFile);
+                }
+            }
+            file.delete();
+        }
     }
 
     private FunctionInfo setFunctionInfo(String json) {

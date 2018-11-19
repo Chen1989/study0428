@@ -32,7 +32,7 @@ public class ClassInfo {
             StringBuilder builder = new StringBuilder(packageName);
             builder.append(getImportStr());
             builder.append("public class " + className + "{\r\n\r\n");
-            builder.append(getClassCode()).append("\r\n\t}");
+            builder.append(getClassCode()).append("\r\n}");
             outputStream.write(builder.toString().getBytes(), 0, builder.length());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -44,7 +44,7 @@ public class ClassInfo {
     private String getClassCode() {
         StringBuilder builder = new StringBuilder();
         for (FunctionInfo fun : functionInfos) {
-            builder.append(fun.codeData).append("\r\n\r\n");
+            builder.append(fun.codeData).append("\r\n");
         }
         return builder.toString();
     }

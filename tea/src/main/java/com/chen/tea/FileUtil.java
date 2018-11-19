@@ -377,18 +377,28 @@ public class FileUtil {
     }
 
     private void replaceFun(ArrayList<ClassInfo> classInfos, HashMap<String, ClassInfo> funClassMap) {
+
+        HashMap<String, Boolean> funIsStatic = new HashMap<>();
+        for (ClassInfo classInfo : classInfos) {
+            for (FunctionInfo info : classInfo.functionInfos) {
+                funIsStatic.put(info.funName, info.isStatic);
+            }
+        }
+
         for (ClassInfo classInfo : classInfos) {
             for (FunctionInfo funInfo : classInfo.functionInfos) {
                 if (funInfo.methodList != null) {
                     for (String name : funInfo.methodList) {
                         if (!classInfo.className.equals(funClassMap.get(name).className)) {
-                            if (funInfo.isStatic) {
-                                funInfo.codeData = funInfo.codeData.replace(name, funClassMap.get(name) + "." + name);
+                            if (funIsStatic.get(name)) {
+                                funInfo.codeData = funInfo.codeData.replace(name, funClassMap.get(name).className + "." + name);
                             } else {
-                                funInfo.codeData = funInfo.codeData.replace(name, "new " + funClassMap.get(name) + "()." + name);
+                                funInfo.codeData = funInfo.codeData.replace(name, "new " + funClassMap.get(name).className + "()." + name);
                             }
                         } else {
-
+                            if (funInfo.isStatic && !funIsStatic.get(name)) {
+                                funInfo.codeData = funInfo.codeData.replace(name, "new " + classInfo.className + "()." + name);
+                            }
                         }
                     }
                 }
@@ -459,7 +469,6 @@ public class FileUtil {
         try {
 
             JsonParser jsonParser = new JsonParser();
-            System.out.println("json = " + json);
             JsonElement jsonElement = jsonParser.parse(json);
             if (jsonElement.isJsonObject()) {
                 JsonObject jsonObject = jsonElement.getAsJsonObject();

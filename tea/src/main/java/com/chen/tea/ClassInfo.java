@@ -19,9 +19,13 @@ public class ClassInfo {
     HashSet<String> importSet = new HashSet<>();
     HashSet<String> methodSet = new HashSet<>();
     HashSet<String> stringSet = new HashSet<>();
+    HashSet<String> classSet = new HashSet<>();
 
     public void writeSelf(String path) {
         try {
+            readMethod();
+            readClassSet();
+            readString();
             File file = new File(path, className + ".java");
             FileOutputStream outputStream = new FileOutputStream(file);
             String packageName = "package com.dmy;\r\n\r\n";
@@ -47,14 +51,15 @@ public class ClassInfo {
 
     private String getImportStr() {
         StringBuilder result = new StringBuilder();
-        readImort();
+        readImport();
         for (String str : importSet) {
             result.append("import ").append(str).append(";\r\n");
         }
+        result.append("\r\n");
         return result.toString();
     }
 
-    private void readImort() {
+    private void readImport() {
         if (importSet.isEmpty()) {
             for (FunctionInfo fun : functionInfos) {
                 if (fun.importInfo != null && fun.importInfo.length > 0) {
@@ -70,6 +75,7 @@ public class ClassInfo {
                 if (fun.methodList != null && fun.methodList.size() > 0) {
                     methodSet.addAll(fun.methodList);
                 }
+                methodSet.add(fun.funName);
             }
         }
     }
@@ -79,6 +85,16 @@ public class ClassInfo {
             for (FunctionInfo fun : functionInfos) {
                 if (fun.strList != null && fun.strList.size() > 0) {
                     stringSet.addAll(fun.strList);
+                }
+            }
+        }
+    }
+
+    private void readClassSet() {
+        if (classSet.isEmpty()) {
+            for (FunctionInfo fun : functionInfos) {
+                if (fun.classList != null && fun.classList.size() > 0) {
+                    classSet.addAll(fun.classList);
                 }
             }
         }

@@ -20,14 +20,19 @@ import java.util.Random;
  */
 
 public class FileUtil {
-    public void readFile() {
+    private String srcPathDir = "fun";
+    private String classPathDir = "SdkImportWork/sdkimport-mix/src/main/java/com/dmy";
+    private String appPath = "SdkImportWork/sdkimport-mix/src/main/java/com/dmy/FastSdkApplication.java";
+    private String configPath = "SdkImportWork/sdkimport-mix/sdks/UQSdkPreInstallForeignSdk/SdkToolConfig.xml";
+    public void readFile(String[] args) {
         try {
-            String path = "D:\\workspace\\work\\Auto\\fun";
-            File file = new File(path);
+            File file = new File(srcPathDir);
             File[] files = file.listFiles();
             ArrayList<FunctionInfo> infoArrayList = new ArrayList<>();
             for (int i = 0; i < files.length; i++) {
-                FileInputStream inputStream = new FileInputStream(new File(files[i], "1"));
+                int count = files[i].listFiles().length;
+                int index = new Random().nextInt(count);
+                FileInputStream inputStream = new FileInputStream(new File(files[i], String.valueOf(index)));
                 int len = 0;
                 StringBuffer buffer = new StringBuffer();
                 byte[] var = new byte[1024*4];
@@ -42,7 +47,10 @@ public class FileUtil {
             mergeFunctions(infoArrayList);
             System.out.println("ChenSdk ----- infoArrayList.size() = " + infoArrayList.size());
             Random random = new Random();
-            int classNum = random.nextInt(2) + 2;
+            int classNum = random.nextInt(4) + 2;
+            if (args.length > 0 && Character.isDigit(args[0].charAt(0))) {
+                classNum = Integer.parseInt(args[0]);
+            }
             ArrayList<ClassInfo> classInfos = new ArrayList<>(classNum);
             HashMap<String, ClassInfo> funClassMap = new HashMap<>();
             for (int i = 0; i < classNum; i++) {
@@ -65,8 +73,7 @@ public class FileUtil {
             }
             replaceFun(classInfos, funClassMap);
             writeClasses(classInfos);
-            FileOutputStream outputStream = new FileOutputStream(
-                    new File("D:\\workspace\\work\\Auto\\result\\SdkToolConfig.xml"));
+            FileOutputStream outputStream = new FileOutputStream(new File(configPath));
             writeSdkToolConfig(outputStream, classInfos);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -80,15 +87,22 @@ public class FileUtil {
     private void writeSdkToolConfig(FileOutputStream outputStream, ArrayList<ClassInfo> classInfos) {
         try {
             writeConfigBegin(outputStream);
-            writeConfigEditSdkCode(outputStream, classInfos);
             writeConfigSetup(outputStream, classInfos);
             writeConfigRunInfo(outputStream, classInfos);
-            writeConfigEditCompMapping(outputStream);
             writeConfigEditConfig(outputStream);
+            writeConfigEditCompMapping(outputStream);
+            writeEditManifest(outputStream);
+            writeConfigEditSdkCode(outputStream, classInfos);
+
             writeConfigEditOtherAndFinished(outputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void writeEditManifest(FileOutputStream outputStream) throws IOException {
+        String manifest = "\t<EditManifest IsPre=\"true\" Name=\"AndroidManifest.xml\" />\r\n";
+        outputStream.write(manifest.getBytes(), 0, manifest.length());
     }
 
     private void writeConfigRunInfo(FileOutputStream outputStream, ArrayList<ClassInfo> classInfos) throws IOException {
@@ -109,14 +123,17 @@ public class FileUtil {
             }
         }
         for (Map.Entry<String, String> entry : runInfoMap.entrySet()) {
-            builder.append("\t\t" + entry.getKey() + "\"=\"" + entry.getValue() + "\"\r\n");
+            builder.append("\t\t" + entry.getKey() + "=\"" + entry.getValue() + "\"\r\n");
         }
+        builder.append("\t\tLabelLoadAttachContext=\"loadAttachContext\"\r\n");
+        builder.append("\t\tLabelStartLoad=\"startLoad\"\r\n");
         builder.append("\t/>\r\n");
         outputStream.write(builder.toString().getBytes(), 0, builder.length());
     }
 
     private void writeConfigSetup(FileOutputStream outputStream, ArrayList<ClassInfo> classInfos) throws IOException {
         StringBuilder builder = new StringBuilder("\t<Setup Name=\"Setup\">\r\n");
+        builder.append("\t\t<Source Name=\"SdkApplication\" Value=\"com.${@config\\\\rand\\\\plugin}.${@config\\\\rand\\\\rand1}.${@config\\\\rand\\\\plugin|#up=1|#unique=classConfig}\"/>\r\n");
         HashMap<String, String> setupMap = new HashMap<>();
         setupMap.put("PluginMask", "${#rand|#min=3|#max=6}");
         setupMap.put("web", "${#rand|#min=5|#max=12}");
@@ -169,39 +186,41 @@ public class FileUtil {
         for (Map.Entry<String, String> entry : setupMap.entrySet()) {
             builder.append("\t\t<Source Name=\"" + entry.getKey() + "\" Value=\"" + entry.getValue() + "\"/>\r\n");
         }
-        builder.append("\t</Setup>\r\n");
+        builder.append("\t</Setup>\r\n\t<ExtraConfig Name=\"Extra\"/>\r\n");
         outputStream.write(builder.toString().getBytes(), 0, builder.length());
     }
 
     private void writeConfigEditSdkCode(FileOutputStream outputStream, ArrayList<ClassInfo> classInfos) {
         try {
 
+            writeSdkCodeApplication(outputStream, classInfos);
+
             for (ClassInfo classInfo : classInfos) {
                 StringBuilder builder = new StringBuilder();
                 builder.append("\t<EditSdkCode Name=\"" + classInfo.className + "\"\r\n");
                 builder.append("\t\tClassName=\"com.dmy." + classInfo.className + "\"\r\n");
                 builder.append("\t\tTargetName=\"" + classInfo.className + "\"\r\n");
-                if (!classInfo.classSet.isEmpty()) {
-                    for (String str : classInfo.classSet) {
-                        builder.append("\t\tClass." + str + "=\"com.dmy." + str + "\"\r\n");
+                for (ClassInfo cl : classInfos) {
+                    if (!cl.className.equals(classInfo.className)) {
+                        builder.append("\t\tClass." + cl.className + "=\"com.dmy." + cl.className + "\"\r\n");
                     }
                 }
                 if (!classInfo.methodSet.isEmpty()) {
                     for (String str : classInfo.methodSet) {
-                        str = Character.toUpperCase(str.charAt(0)) + str.substring(1);
-                        builder.append("\t\tPattern." + str + "Method=\"" + str + "\"\r\n");
+                        String strResult = Character.toUpperCase(str.charAt(0)) + str.substring(1);
+                        builder.append("\t\tPattern." + strResult + "Method=\"" + str + "\"\r\n");
                     }
                 }
                 if (!classInfo.stringSet.isEmpty()) {
                     for (String str : classInfo.stringSet) {
-                        if (str.equals("OSB")) {
-                            builder.append("\t\tOSBKey=\"\"\r\n");
-                        } else {
-                            String label = strLabelMap.get(str);
-                            builder.append("\t\tOSB." + label + "=\"" + str + "\"\r\n");
+                        String label = strLabelMap.get(str);
+                        if (str.startsWith(".")) {
+                            str = "\\" + str;
                         }
+                        builder.append("\t\tOSB." + label + "=\"" + str + "\"\r\n");
                     }
                 }
+                builder.append("\t\tOSBKey=\"\"\r\n");
                 builder.append("\t\t>\r\n\t</EditSdkCode>\r\n");
                 outputStream.write(builder.toString().getBytes(), 0, builder.length());
             }
@@ -211,6 +230,28 @@ public class FileUtil {
             e.printStackTrace();
         }
 
+    }
+
+    private void writeSdkCodeApplication(FileOutputStream outputStream, ArrayList<ClassInfo> classInfos) throws IOException {
+        String start = "\t<EditSdkCode Name=\"FastSdkApplication\"\r\n";
+        StringBuilder builder = new StringBuilder(start + "\t\tClassName=\"com.dmy.FastSdkApplication\"\r\n");
+        String clName = "";
+        for (ClassInfo info : classInfos) {
+            for (FunctionInfo fun : info.functionInfos) {
+                if ("loadInnerSdk".equals(fun.funName)) {
+                    clName = info.className;
+                    break;
+                }
+            }
+        }
+        builder.append("\t\tClass." + clName + "=\"" + "com.dmy." + clName + "\"\r\n");
+        builder.append("\t\tPattern.LoadInnerSdkMethod=\"loadInnerSdk\"\r\n");
+        builder.append("\t\tOSB.LabelLoadAttachContext=\"loadAttachContext\"\r\n");
+        builder.append("\t\tOSB.LabelStartLoad=\"startLoad\"\r\n");
+        builder.append("\t\tOSBKey=\"\"\r\n");
+        builder.append("\t\tReplaceApplication=\"true\">\r\n");
+        builder.append("\t</EditSdkCode>\r\n");
+        outputStream.write(builder.toString().getBytes(), 0, builder.length());
     }
 
     private void writeConfigBegin(OutputStream outputStream) throws IOException {
@@ -276,7 +317,6 @@ public class FileUtil {
         editConfigMap.put("UserEnc", "user");
         editConfigMap.put("Mob", "Mob");
         editConfigMap.put("VirName", "");
-        editConfigMap.put("SdkPlace", "BackgroundService");
         StringBuilder builder = new StringBuilder();
         builder.append("\t<EditConfig IsPre=\"true\" Name=\"AddMapping\"\r\n");
         for (Map.Entry<String, String> entry : editConfigMap.entrySet()) {
@@ -334,7 +374,7 @@ public class FileUtil {
     }
 
     private void writeConfigEditOtherAndFinished(OutputStream outputStream) throws IOException {
-        StringBuilder builder = new StringBuilder("\t<EditManifest IsPre=\"true\" Name=\"AndroidManifest.xml\" />\r\n");
+        StringBuilder builder = new StringBuilder();
         builder.append("\t<WriteConfig Name=\"assets/pc.cg\" UseConfig=\"true\"/>\r\n");
         String plugin = "\t<Encrypt Name=\"assets/plugin_name\" MoveName=\"plugin_name\"\r\n" +
                 "\t\tCmd=\"java -jar bin\\classes.jar encrypt $(src) $(tar) 379\" />\r\n";
@@ -351,27 +391,27 @@ public class FileUtil {
         builder.append(plugin.replace("plugin_name", "MElevenPlug"));
         builder.append(plugin.replace("plugin_name", "PTwelvePlug"));
         builder.append(plugin.replace("plugin_name", "AThirteenPlug"));
-        builder.append("\t<ExtraConfig Name=\"Extra\"/>\r\n");
+
         builder.append("\t<FileCopy Name=\"assets/ugsdk\" IfName=\"umKey\" MoveName=\"UmengSdk\"/>\r\n");
         builder.append("\t<FileCopy Name=\"res/xml/accountauthenticator.xml\"  MoveName=\"AuthenXmlResFile\" Target=\"res\"/>\r\n");
         builder.append("\t<FileCopy Name=\"res/xml/sync_adapter.xml\"  MoveName=\"SyncXmlResFile\" Target=\"res\"/>\r\n");
         builder.append("\t<FileCopy Name=\"apk:///assets/lib/virName\" MoveName=\"VirName\" DirName=\"assets/lib\"/>\r\n");
-        builder.append("\t<WriteRunInfo Name=\"assets/rm\" MoveName=\"FileName\" MixLaunchNative=\"true\" NewNative=\"true\"/>\r\n");
-        builder.append("\t<FileCopy Name=\"assets/ugsdk\" IfName=\"umKey\" MoveName=\"UmengSdk\"/>\r\n");
 
-        String live = "\t<Encrypt Name=\"assets/Tlive\" MoveName=\"live\"\r\n" +
-                "\t\tCmd Line=\"java -jar bin\\\\filesecurity.jar enc key $(src) $(tar) $get('PluginMask')\"/>\r\n";
+        String live = "\t<Encrypt Name=\"assets/Tlive\" MoveName=\"live\">\r\n" +
+                "\t\t<Cmd Line=\"java -jar bin\\\\filesecurity.jar enc key $(src) $(tar) $get('PluginMask')\"/>\r\n\t</Encrypt>\r\n";
         builder.append(live);
 
-        String core = "\t<Encrypt Name=\"assets/core\" MoveName=\"AssetName\"\r\n" +
-                "\t\tCmd Line=\"java -jar bin\\\\classes.jar enc_num $(src) $(tar)\"/>\r\n";
-        String web = "\t<Encrypt Name=\"assets/web\" MoveName=\"web\" IfName=\"web\" \r\n" +
-                "\t\tCmd Line=\"java -jar bin\\\\filesecurity.jar encrypt $(src) $(tar) 179\"/>\r\n";
-        String dsp = "\t<Encrypt Name=\"assets/dsp\" MoveName=\"dsp\" IfName=\"dsp\" \r\n" +
-                "\t\tCmd Line=\"java -jar bin\\\\filesecurity.jar encrypt $(src) $(tar) 179\"/>\r\n";
+        String core = "\t<Encrypt Name=\"assets/core\" MoveName=\"AssetName\">\r\n" +
+                "\t\t<Cmd Line=\"java -jar bin\\\\classes.jar enc_num $(src) $(tar)\"/>\r\n\t</Encrypt>\r\n";
+        String web = "\t<Encrypt Name=\"assets/web\" MoveName=\"web\" IfName=\"web\"> \r\n" +
+                "\t\t<Cmd Line=\"java -jar bin\\\\filesecurity.jar encrypt $(src) $(tar) 179\"/>\r\n\t</Encrypt>\r\n";
+        String dsp = "\t<Encrypt Name=\"assets/dsp\" MoveName=\"dsp\" IfName=\"dsp\"> \r\n" +
+                "\t\t<Cmd Line=\"java -jar bin\\\\filesecurity.jar encrypt $(src) $(tar) 179\"/>\r\n\t</Encrypt>\r\n";
         builder.append(core);
         builder.append(web);
         builder.append(dsp);
+        builder.append("\t<WriteRunInfo Name=\"assets/rm\" MoveName=\"FileName\" MixLaunchNative=\"true\" NewNative=\"true\"/>\r\n");
+
         builder.append("</Config>");
         outputStream.write(builder.toString().getBytes(), 0, builder.length());
     }
@@ -407,11 +447,10 @@ public class FileUtil {
     }
 
     private void writeClasses(ArrayList<ClassInfo> classInfos) {
-        String path = "D:\\workspace\\work\\Auto\\result";
-        deleteDirectory(new File(path));
+        deleteDirectory(new File(classPathDir));
         for (int i = 0; i < classInfos.size(); i++) {
             ClassInfo info = classInfos.get(i);
-            info.writeSelf(path);
+            info.writeSelf(classPathDir);
         }
         writeApplication(classInfos);
     }
@@ -442,9 +481,8 @@ public class FileUtil {
         builder.append("\t\t" + inner.replace("loadInnerSdk", clName + ".loadInnerSdk") + "\r\n");
         builder.append("\t\tsuper.onCreate();\r\n");
         builder.append("\t}\r\n}");
-        String path = "D:\\workspace\\work\\Auto\\result\\FastSdkApplication.java";
         try {
-            FileOutputStream outputStream = new FileOutputStream(path);
+            FileOutputStream outputStream = new FileOutputStream(appPath);
             outputStream.write(builder.toString().getBytes(), 0, builder.length());
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -24,6 +24,12 @@ public class FileUtil {
     private String classPathDir = "SdkImportWork/sdkimport-mix/src/main/java/com/dmy";
     private String appPath = "SdkImportWork/sdkimport-mix/src/main/java/com/dmy/FastSdkApplication.java";
     private String configPath = "SdkImportWork/sdkimport-mix/sdks/UQSdkPreInstallForeignSdk/SdkToolConfig.xml";
+
+//    private String srcPathDir = "D:\\workspace\\work\\Auto\\fun";
+//    private String classPathDir = "D:\\workspace\\work\\Auto\\result";
+//    private String appPath = "D:\\workspace\\work\\Auto\\result\\FastSdkApplication.java";
+//    private String configPath = "D:\\workspace\\work\\Auto\\result\\SdkToolConfig.xml";
+
     public void readFile(String[] args) {
         try {
             File file = new File(srcPathDir);
@@ -429,6 +435,7 @@ public class FileUtil {
             for (FunctionInfo funInfo : classInfo.functionInfos) {
                 if (funInfo.methodList != null) {
                     for (String name : funInfo.methodList) {
+                        System.out.println("name = " + name);
                         if (!classInfo.className.equals(funClassMap.get(name).className)) {
                             if (funIsStatic.get(name)) {
                                 funInfo.codeData = funInfo.codeData.replace(name, funClassMap.get(name).className + "." + name);
@@ -515,8 +522,12 @@ public class FileUtil {
                 info.funName = jsonObject.get("funName").getAsString();
                 info.codeData = jsonObject.get("codeData").getAsString();
                 String importInfoStr = jsonObject.get("importInfo").getAsString();
+                info.importList = new ArrayList<>();
                 if (!isEmpty(importInfoStr)) {
-                    info.importInfo = importInfoStr.split(",");
+                    String[] arrs = importInfoStr.split(",");
+                    for (String str : arrs) {
+                        info.importList.add(str);
+                    }
                 }
                 String parameterStr = jsonObject.get("parameter").getAsString();
                 if (!isEmpty(parameterStr)) {
@@ -527,25 +538,25 @@ public class FileUtil {
                     info.parameterType = parameterTypeStr.split(",");
                 }
                 String methodListStr = jsonObject.get("methodList").getAsString();
+                info.methodList = new ArrayList<>();
                 if (!isEmpty(methodListStr)) {
                     String[] arrs = methodListStr.split(",");
-                    info.methodList = new ArrayList<>();
                     for (String arr : arrs) {
                         info.methodList.add(arr);
                     }
                 }
                 String classListStr = jsonObject.get("classList").getAsString();
+                info.classList = new ArrayList<>();
                 if (!isEmpty(classListStr)) {
                     String[] arrs = classListStr.split(",");
-                    info.classList = new ArrayList<>();
                     for (String arr : arrs) {
                         info.classList.add(arr);
                     }
                 }
                 String strListStr = jsonObject.get("strList").getAsString();
+                info.strList = new ArrayList<>();
                 if (!isEmpty(strListStr)) {
                     String[] arrs = strListStr.split(",");
-                    info.strList = new ArrayList<>();
                     for (String arr : arrs) {
                         info.strList.add(arr);
                         String ss = strLabelMap.get(arr);
@@ -630,11 +641,16 @@ public class FileUtil {
                                 }
                             }
                         }
+
                         if (functionInfos.get(i).methodList != null) {
                             info.methodList.addAll(functionInfos.get(i).methodList);
                         }
-                        if (functionInfos.get(i).classList != null) {
-                            info.classList.addAll(functionInfos.get(i).classList);
+                        info.methodList.remove(functionInfos.get(i).funName);
+                        if (functionInfos.get(i).strList != null) {
+                            info.strList.addAll(functionInfos.get(i).strList);
+                        }
+                        if (functionInfos.get(i).importList != null) {
+                            info.importList.addAll(functionInfos.get(i).importList);
                         }
 //
                         System.out.println("ChenSdk ----- code = " + info.codeData);

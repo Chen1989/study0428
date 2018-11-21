@@ -16,7 +16,7 @@ public class FunctionInfo {
     boolean isStatic;           //是否静态方法,调用时会用到
     String[] parameter;         //函数参数
     String[] parameterType;     //函数参数类型
-    String[] importInfo;        //导入信息
+    List<String> importList;        //导入信息
     boolean merge;              //是否能合并
     boolean merged;             //是否合并
     String result;              //返回值

@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -62,8 +61,8 @@ public class ClassInfo {
     private void readImport() {
         if (importSet.isEmpty()) {
             for (FunctionInfo fun : functionInfos) {
-                if (fun.importInfo != null && fun.importInfo.length > 0) {
-                    importSet.addAll(Arrays.asList(fun.importInfo));
+                if (fun.importList != null && fun.importList.size() > 0) {
+                    importSet.addAll(fun.importList);
                 }
             }
         }

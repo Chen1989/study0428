@@ -20,15 +20,15 @@ import java.util.Random;
  */
 
 public class FileUtil {
-    private String srcPathDir = "fun";
-    private String classPathDir = "SdkImportWork/sdkimport-mix/src/main/java/com/dmy";
-    private String appPath = "SdkImportWork/sdkimport-mix/src/main/java/com/dmy/FastSdkApplication.java";
-    private String configPath = "SdkImportWork/sdkimport-mix/sdks/UQSdkPreInstallForeignSdk/SdkToolConfig.xml";
+//    private String srcPathDir = "fun";
+//    private String classPathDir = "SdkImportWork/sdkimport-mix/src/main/java/com/dmy";
+//    private String appPath = "SdkImportWork/sdkimport-mix/src/main/java/com/dmy/FastSdkApplication.java";
+//    private String configPath = "SdkImportWork/sdkimport-mix/sdks/UQSdkPreInstallForeignSdk/SdkToolConfig.xml";
 
-//    private String srcPathDir = "D:\\workspace\\work\\Auto\\fun";
-//    private String classPathDir = "D:\\workspace\\work\\Auto\\result";
-//    private String appPath = "D:\\workspace\\work\\Auto\\result\\FastSdkApplication.java";
-//    private String configPath = "D:\\workspace\\work\\Auto\\result\\SdkToolConfig.xml";
+    private String srcPathDir = "D:\\workspace\\work\\Auto\\auto_code\\fun";
+    private String classPathDir = "D:\\workspace\\work\\Auto\\auto_code\\result";
+    private String appPath = "D:\\workspace\\work\\Auto\\auto_code\\result\\FastSdkApplication.java";
+    private String configPath = "D:\\workspace\\work\\Auto\\auto_code\\result\\SdkToolConfig.xml";
 
     public void readFile(String[] args) {
         try {

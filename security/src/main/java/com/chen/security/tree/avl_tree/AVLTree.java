@@ -99,6 +99,76 @@ public class AVLTree {
         return root;
     }
 
+    public TreeNode delete(TreeNode root, TreeNode node) {
+        if (root == null) {
+            return null;
+        }
+        if (node._key < root._key)        //要删除的结点在左子树
+        {
+            root._leftNode = delete(root._leftNode, node);
+            if (height(root._rightNode) - height(root._leftNode) == 2)    //删除导致二叉树失衡
+            {
+                TreeNode rightNode = root._rightNode;
+                if (height(rightNode._leftNode)>height(rightNode._rightNode))
+                    root = rightLeftRotate(root);
+                else root = rightRightRotate(root);
+            }
+        }
+        else if (node._key > root._key)    //要删除的结点在右子树
+        {
+            root._rightNode = delete(root._rightNode, node);
+            if (height(root._leftNode) - height(root._rightNode) == 2)    //删除导致二叉树失衡
+            {
+                TreeNode leftNode = root._leftNode;
+                if (height(leftNode._leftNode) > height(leftNode._rightNode))
+                    root = leftLeftRotate(root);
+                else root = leftRightRotate(root);
+            }
+        }
+        else    //找到了要删除的结点
+        {
+            if (root._leftNode != null && root._rightNode != null)    //结点的左右子树均不为空
+            {
+                if (height(root._leftNode) > height(root._rightNode))
+                {
+                /*
+                * 如果tree的左子树比右子树高；
+                * 则(01)找出tree的左子树中的最大节点
+                *  (02)将该最大节点的值赋值给tree。
+                *  (03)删除该最大节点。
+                * 这类似于用"tree的左子树中最大节点"做"tree"的替身；
+                * 采用这种方式的好处是：删除"tree的左子树中最大节点"之后，AVL树仍然是平衡的。
+                */
+
+                    TreeNode maxNode = null;//maximus(root._leftNode);
+                    root._key = maxNode._key;
+                    root._leftNode = delete(root._leftNode, maxNode);
+                }
+                else
+                {
+                /*
+                 * 如果tree的左子树不比右子树高(即它们相等，或右子树比左子树高1)
+                 * 则(01)找出tree的右子树中的最小节点
+                 *  (02)将该最小节点的值赋值给tree。
+                 *  (03)删除该最小节点。
+                 * 这类似于用"tree的右子树中最小节点"做"tree"的替身；
+                 * 采用这种方式的好处是：删除"tree的右子树中最小节点"之后，AVL树仍然是平衡的。
+                 */
+
+                    TreeNode minNode = null;//minimus(root._rightNode);
+                    root._key = minNode._key;
+                    root._rightNode = delete(root._rightNode, minNode);
+                }
+            }
+            else
+            {
+                TreeNode tmp = root;
+                root = (root._leftNode != null) ? root._leftNode : root._rightNode;
+            }
+        }
+        return root;
+    }
+
     public void preOrder(TreeNode root) {
         if (root != null) {
 //            Log.i("ChenSdk", "root key = " + root._key);

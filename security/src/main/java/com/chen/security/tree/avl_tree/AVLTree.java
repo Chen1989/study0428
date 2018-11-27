@@ -25,7 +25,7 @@ public class AVLTree {
 
     /**
      * root左孩子的左孩子插入节点后，root失去平衡
-     * @param root 旋转点-----最低失衡点
+     * @param root 旋转点-----最低失衡点,调整之后的根节点
      * @return
      */
     private TreeNode leftLeftRotate(TreeNode root) {
@@ -39,7 +39,7 @@ public class AVLTree {
 
     /**
      * root右孩子的右孩子插入节点后，root失去平衡
-     * @param root 旋转点-----最低失衡点
+     * @param root 旋转点-----最低失衡点,调整之后的根节点
      * @return
      */
     private TreeNode rightRightRotate(TreeNode root) {
@@ -180,17 +180,17 @@ public class AVLTree {
 
     public void inOrder(TreeNode root) {
         if (root != null) {
-            preOrder(root._leftNode);
+            inOrder(root._leftNode);
 //            Log.i("ChenSdk", "root key = " + root._key);
             System.out.println("root key = " + root._key);
-            preOrder(root._rightNode);
+            inOrder(root._rightNode);
         }
     }
 
     public void postOrder(TreeNode root) {
         if (root != null) {
-            preOrder(root._leftNode);
-            preOrder(root._rightNode);
+            postOrder(root._leftNode);
+            postOrder(root._rightNode);
 //            Log.i("ChenSdk", "root key = " + root._key);
             System.out.println("root key = " + root._key);
         }

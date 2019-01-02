@@ -1,7 +1,6 @@
 package com.chen.security.tree.avl_tree;
 
 
-import java.math.BigInteger;
 import java.util.Scanner;
 
 public class Main {
@@ -23,48 +22,76 @@ public class Main {
 //        }
 //    }
 
-//    private static void question1003() {
-//        Scanner cin = new Scanner(System.in);
-//        while (cin.hasNext()) {
-//            int T = cin.nextInt();
-//
-//            int No = 1;
-//            while (T > 0) {
-//                int N = cin.nextInt();
-//                int[] num = new int[N];
-//                for (int i = 0; i < N; i++) {
-//                    num[i] = cin.nextInt();
-//                }
-//                int maxSum = -10000, thisSum = 0;
-//                int start = 0, end = 0;
-//                for (int i = 0; i < N; i++) {
-//                    thisSum += num[i];
-//                    if (thisSum > maxSum) {
-//                        maxSum = thisSum;
-//                        end = i;
-//                    }
-//                    if (thisSum < 0) {
-//                        thisSum = 0;
-//                    }
-//                }
-//                int sum = 0;
-//                for (int i = end; i > -1; i--) {
-//                    sum += num[i];
-//                    if (sum == maxSum) {
-//                        start = i;
-//                    }
-//                }
-//
-//                System.out.println("Case " + No + ":");
-//                System.out.println(maxSum + " " + (start + 1) + " " + (end + 1));
-//                No++;
-//                if (T != 1)
-//                    System.out.println();
-//                T--;
-//
-//            }
-//        }
-//    }
+    private static void question1003() {
+        Scanner cin = new Scanner(System.in);
+        while (cin.hasNext()) {
+            int T = cin.nextInt();
+
+            int No = 1;
+            while (T > 0) {
+                int N = cin.nextInt();
+                int[] num = new int[N];
+                for (int i = 0; i < N; i++) {
+                    num[i] = cin.nextInt();
+                }
+                int maxSum = -10000, thisSum = 0;
+                int start = 0, end = 0;
+                for (int i = 0; i < N; i++) {
+                    thisSum += num[i];
+                    if (thisSum > maxSum) {
+                        maxSum = thisSum;
+                        end = i;
+                    }
+                    if (thisSum < 0) {
+                        thisSum = 0;
+                    }
+                }
+                int sum = 0;
+                for (int i = end; i > -1; i--) {
+                    sum += num[i];
+                    if (sum == maxSum) {
+                        start = i;
+                    }
+                }
+
+                System.out.println("Case " + No + ":");
+                System.out.println(maxSum + " " + (start + 1) + " " + (end + 1));
+                No++;
+                if (T != 1)
+                    System.out.println();
+                T--;
+
+            }
+        }
+    }
+
+    private static void question1004() {
+        Scanner cin = new Scanner(System.in);
+        while (cin.hasNext()) {
+            int num = cin.nextInt();
+            if (num == 0) {
+                return;
+            }
+            HashMap<String, Integer> map = new HashMap<>();
+            for (int i = 0; i < num; i++) {
+                String str = cin.next();
+                int strNum = 0;
+                if (map.get(str) != null) {
+                    strNum = map.get(str);
+                }
+                map.put(str, strNum + 1);
+            }
+            int max = 0;
+            String name = "";
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                if (max < entry.getValue()) {
+                    name = entry.getKey();
+                    max = entry.getValue();
+                }
+            }
+            System.out.println(name);
+        }
+    }
 
     private static void question1005() {
         Scanner cin = new Scanner(System.in);

@@ -7,7 +7,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String args[]) {
-        question1005();
+//        question1005();
+//        System.out.println('b' - 'a');
+        question1181();
     }
 
 //    private static void question1002() {
@@ -112,6 +114,43 @@ public class Main {
             }
             num =  (num - 1) % 49;
             System.out.println(result[num]);
+        }
+    }
+
+    private static void question1181() {
+
+        Scanner cin = new Scanner(System.in);
+        while (cin.hasNext()) {
+            int[][] map = new int[26][26];
+            String input;
+            while (!(input = cin.next()).equals("0")) {
+                int x = input.charAt(0) - 'a';
+                int y = input.charAt(input.length() - 1) - 'a';
+                map[x][y] = 1;
+            }
+            DFS(1, map);
+            if(Right==1) {
+                System.out.println("Yes.");
+            } else {
+                System.out.println("No.");
+            }
+            Right = 0;
+        }
+    }
+
+    private static int Right = 0;
+    private static void DFS(int x, int[][] map){
+        if(Right == 1) return;
+        if(x == 12){
+            Right = 1;
+            return;
+        }
+        for(int i = 0;i<26;i++) {
+            if(map[x][i]==1){
+                map[x][i] = 0;
+                DFS(i, map);
+                map[x][i] = 1;
+            }
         }
     }
 }
